@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -5,15 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
-import { Filter, Clock, FileText, TrendingUp } from 'lucide-react';
+import { Filter, FileText, TrendingUp } from 'lucide-react';
 
 const SearchResults = () => {
   const { topic } = useParams();
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [wordCount, setWordCount] = useState([1000]);
-  const [videoLength, setVideoLength] = useState([10]);
 
   // Mock data for problem statements related to the topic
   const problemStatements = [
@@ -22,8 +20,6 @@ const SearchResults = () => {
       title: `The Hidden Impact of ${topic} on Global Economy`,
       description: 'Explore the economic implications and market disruptions caused by this trending topic',
       category: 'Economic Analysis',
-      estimatedWords: 1200,
-      videoLength: 12,
       difficulty: 'Intermediate'
     },
     {
@@ -31,8 +27,6 @@ const SearchResults = () => {
       title: `${topic}: A Deep Dive into Public Opinion`,
       description: 'Analyze public sentiment and social media reactions to understand broader implications',
       category: 'Social Impact',
-      estimatedWords: 900,
-      videoLength: 8,
       difficulty: 'Beginner'
     },
     {
@@ -40,8 +34,6 @@ const SearchResults = () => {
       title: `Technology Behind ${topic}: Expert Analysis`,
       description: 'Technical breakdown and expert insights into the technological aspects',
       category: 'Technology',
-      estimatedWords: 1500,
-      videoLength: 15,
       difficulty: 'Advanced'
     },
     {
@@ -49,8 +41,6 @@ const SearchResults = () => {
       title: `Historical Context: How ${topic} Relates to Past Events`,
       description: 'Drawing parallels with historical events to provide context and perspective',
       category: 'Historical',
-      estimatedWords: 1100,
-      videoLength: 11,
       difficulty: 'Intermediate'
     },
     {
@@ -58,8 +48,6 @@ const SearchResults = () => {
       title: `Future Implications of ${topic}`,
       description: 'Predicting long-term consequences and potential future developments',
       category: 'Future Analysis',
-      estimatedWords: 1300,
-      videoLength: 13,
       difficulty: 'Advanced'
     }
   ];
@@ -67,11 +55,7 @@ const SearchResults = () => {
   const categories = ['all', 'Economic Analysis', 'Social Impact', 'Technology', 'Historical', 'Future Analysis'];
 
   const filteredStatements = problemStatements.filter(statement => {
-    const categoryMatch = selectedCategory === 'all' || statement.category === selectedCategory;
-    const wordMatch = statement.estimatedWords >= wordCount[0] - 200 && statement.estimatedWords <= wordCount[0] + 200;
-    const lengthMatch = statement.videoLength >= videoLength[0] - 2 && statement.videoLength <= videoLength[0] + 2;
-    
-    return categoryMatch && wordMatch && lengthMatch;
+    return selectedCategory === 'all' || statement.category === selectedCategory;
   });
 
   const handleStatementClick = (id: number) => {
@@ -106,67 +90,26 @@ const SearchResults = () => {
               <CardContent className="space-y-6">
                 {/* Category Filter */}
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">
+                  <label className="text-sm font-medium text-gray-700 mb-3 block">
                     Category
                   </label>
-                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map(category => (
-                        <SelectItem key={category} value={category}>
-                          {category === 'all' ? 'All Categories' : category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Word Count Filter */}
-                <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Target Word Count: {wordCount[0]} words
-                  </label>
-                  <Slider
-                    value={wordCount}
-                    onValueChange={setWordCount}
-                    max={2000}
-                    min={500}
-                    step={100}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>500</span>
-                    <span>2000</span>
+                  <div className="space-y-2">
+                    {categories.map(category => (
+                      <Button
+                        key={category}
+                        variant={selectedCategory === category ? "default" : "outline"}
+                        onClick={() => setSelectedCategory(category)}
+                        className="w-full justify-start"
+                        size="sm"
+                      >
+                        {category === 'all' ? 'All Categories' : category}
+                      </Button>
+                    ))}
                   </div>
                 </div>
 
-                {/* Video Length Filter */}
-                <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Video Length: {videoLength[0]} minutes
-                  </label>
-                  <Slider
-                    value={videoLength}
-                    onValueChange={setVideoLength}
-                    max={20}
-                    min={5}
-                    step={1}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>5 min</span>
-                    <span>20 min</span>
-                  </div>  
-                </div>
-
                 <Button
-                  onClick={() => {
-                    setSelectedCategory('all');
-                    setWordCount([1000]);
-                    setVideoLength([10]);
-                  }}
+                  onClick={() => setSelectedCategory('all')}
                   variant="outline"
                   className="w-full"
                 >
@@ -182,7 +125,7 @@ const SearchResults = () => {
               <p className="text-gray-600">
                 Found {filteredStatements.length} script ideas
               </p>
-              <Badge variant="secondary" className="px-3 py-1">
+              <Badge variant="secondary">
                 <TrendingUp className="w-4 h-4 mr-1" />
                 Trending Topic
               </Badge>
@@ -211,15 +154,7 @@ const SearchResults = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center space-x-6 text-sm text-gray-500">
-                      <div className="flex items-center">
-                        <FileText className="w-4 h-4 mr-1" />
-                        {statement.estimatedWords} words
-                      </div>
-                      <div className="flex items-center">
-                        <Clock className="w-4 h-4 mr-1" />
-                        {statement.videoLength} min video
-                      </div>
+                    <div className="flex items-center space-x-4">
                       <Badge variant="secondary">
                         {statement.category}
                       </Badge>
@@ -236,11 +171,7 @@ const SearchResults = () => {
                     No scripts match your current filters
                   </p>
                   <Button
-                    onClick={() => {
-                      setSelectedCategory('all');
-                      setWordCount([1000]);
-                      setVideoLength([10]);
-                    }}
+                    onClick={() => setSelectedCategory('all')}
                     variant="outline"
                   >
                     Reset Filters

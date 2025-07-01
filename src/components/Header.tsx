@@ -10,17 +10,15 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
+import { Crown } from 'lucide-react';
 
 const Header = () => {
   return (
     <header className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Title only, no logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">YS</span>
-            </div>
             <span className="text-xl font-bold text-gray-900">YouTube Scripter</span>
           </Link>
 
@@ -28,7 +26,10 @@ const Header = () => {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Pricing</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="flex items-center">
+                  <Crown className="w-4 h-4 mr-1 text-yellow-500" />
+                  Upgrade
+                </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="grid gap-3 p-6 w-[400px]">
                     <div className="grid gap-1">

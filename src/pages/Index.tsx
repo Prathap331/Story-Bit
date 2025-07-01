@@ -41,6 +41,13 @@ const Index = () => {
     handleSearch(suggestion);
   };
 
+  // Show suggestions based on selected type
+  const currentSuggestions = selectedType === 'news' ? trendingNews : documentaryTopics;
+  const suggestionTitle = selectedType === 'news' ? 'Trending News Topics' : 'Documentary Ideas';
+  const suggestionDescription = selectedType === 'news' 
+    ? 'Latest trending topics perfect for news-style videos'
+    : 'Compelling documentary subjects for in-depth exploration';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       <Header />
@@ -110,71 +117,49 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Suggestions */}
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Trending News */}
-              <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-xl">
+          {/* Single Suggestions Section */}
+          <div className="max-w-2xl mx-auto">
+            <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center text-xl">
+                  {selectedType === 'news' ? (
                     <TrendingUp className="w-6 h-6 mr-2 text-purple-600" />
-                    Trending News Topics
-                  </CardTitle>
-                  <CardDescription>
-                    Latest trending topics perfect for news-style videos
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {trendingNews.map((topic, index) => (
-                      <div
-                        key={index}
-                        onClick={() => handleSuggestionClick(topic)}
-                        className="flex items-center justify-between p-3 rounded-lg hover:bg-purple-50 cursor-pointer transition-colors group"
-                      >
-                        <span className="text-gray-700 group-hover:text-purple-700 font-medium">
-                          {topic}
-                        </span>
-                        <Badge variant="secondary" className="text-xs">
-                          Hot
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Documentary Topics */}
-              <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-xl">
+                  ) : (
                     <Film className="w-6 h-6 mr-2 text-blue-600" />
-                    Documentary Ideas
-                  </CardTitle>
-                  <CardDescription>
-                    Compelling documentary subjects for in-depth exploration
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {documentaryTopics.map((topic, index) => (
-                      <div
-                        key={index}
-                        onClick={() => handleSuggestionClick(topic)}
-                        className="flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors group"
-                      >
-                        <span className="text-gray-700 group-hover:text-blue-700 font-medium">
-                          {topic}
-                        </span>
-                        <Badge variant="outline" className="text-xs">
-                          Deep Dive
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                  )}
+                  {suggestionTitle}
+                </CardTitle>
+                <CardDescription>
+                  {suggestionDescription}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {currentSuggestions.map((topic, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleSuggestionClick(topic)}
+                      className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors group ${
+                        selectedType === 'news' 
+                          ? 'hover:bg-purple-50' 
+                          : 'hover:bg-blue-50'
+                      }`}
+                    >
+                      <span className={`font-medium ${
+                        selectedType === 'news'
+                          ? 'text-gray-700 group-hover:text-purple-700'
+                          : 'text-gray-700 group-hover:text-blue-700'
+                      }`}>
+                        {topic}
+                      </span>
+                      <Badge variant={selectedType === 'news' ? 'secondary' : 'outline'} className="text-xs">
+                        {selectedType === 'news' ? 'Hot' : 'Deep Dive'}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Features */}

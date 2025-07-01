@@ -47,47 +47,11 @@ const ScriptDetails = () => {
       { id: 'solutions', title: 'Potential Solutions', duration: '8:00-10:30', words: 234 },
       { id: 'conclusion', title: 'Call to Action', duration: '10:30-12:30', words: 127 }
     ],
-    content: {
-      introduction: `Did you know that climate change isn't just melting ice caps and causing extreme weather? It's quietly reshaping the global economy in ways that affect your daily life right now. From the coffee you drink to the mortgage rates you pay, climate change is an economic force that's already costing the world trillions of dollars annually.
+    synopsis: `This comprehensive script explores the hidden economic impacts of climate change, examining how environmental changes are reshaping global markets, industries, and financial systems. The script provides a balanced analysis combining factual data with real-world examples to illustrate the far-reaching economic consequences of climate change.
 
-Today, we're diving deep into the hidden economic impacts of climate change – impacts that mainstream media often overlooks but that are fundamentally changing how money flows around the world.`,
-      
-      problem: `Here's the stark reality: climate change is costing the global economy approximately $150 billion annually, and this figure is accelerating rapidly. But these aren't just abstract numbers on a spreadsheet – they represent fundamental shifts in how our economic systems operate.
+The narrative begins with a compelling hook about climate change's economic impact on daily life, then systematically presents evidence through statistical data, case studies, and expert insights. The script maintains viewer engagement through strategic use of examples, historical parallels, and emotional connections while building toward actionable solutions and a strong call to action.
 
-The World Bank estimates that without immediate action, climate change could reduce global GDP by 10-23% by 2100. To put this in perspective, the 2008 financial crisis reduced global GDP by just 0.6%.`,
-      
-      evidence: `Let's examine the data that reveals the true scope of this economic transformation:
-
-First, agricultural productivity has declined by 21% since 1961 due to climate change, according to Cornell University research. This isn't just about farmers – it directly impacts food prices globally.
-
-Second, extreme weather events caused $280 billion in damages in 2021 alone. Hurricane Ida cost $65 billion, while European floods caused $43 billion in damages.
-
-Third, the insurance industry is restructuring entirely. Swiss Re estimates that insurers face $23 trillion in climate-related losses by 2100.`,
-      
-      examples: `Consider these real-world examples that illustrate the economic ripple effects:
-
-In Australia, the 2019-2020 bushfires didn't just destroy forests – they wiped out $4.4 billion from the tourism industry alone. Wine regions lost entire vintages, affecting export revenues for years.
-
-Miami real estate provides another striking example. Properties in flood-prone areas are selling for 7-15% less than similar properties on higher ground. This "climate discount" is reshaping the $30 trillion U.S. real estate market.
-
-The semiconductor industry, crucial for everything from phones to cars, faces disruption as Taiwan – producing 63% of global chips – faces increasing typhoon intensity and drought risks.`,
-      
-      solutions: `Despite these challenges, economic opportunities are emerging:
-
-The renewable energy sector now employs 13.7 million people globally and continues growing at 11% annually. Countries investing heavily in green technology are positioning themselves as economic leaders.
-
-Carbon pricing mechanisms, now operating in 40 jurisdictions covering 23% of global emissions, are creating new revenue streams while incentivizing emission reductions.
-
-Green bonds have grown from $11 billion in 2013 to over $500 billion in 2022, demonstrating that sustainable finance is becoming mainstream.
-
-Nature-based solutions like reforestation and wetland restoration generate $7.3 in economic benefits for every dollar invested.`,
-      
-      conclusion: `The economic impact of climate change isn't a future problem – it's reshaping markets, investments, and opportunities right now. While the challenges are significant, they're also creating unprecedented opportunities for innovation and growth.
-
-As individuals and businesses, we can't afford to ignore these economic realities. Whether you're making investment decisions, career choices, or simply trying to understand why prices are changing, climate economics affects you.
-
-What economic impacts of climate change have you noticed in your daily life? Share your observations in the comments below, and don't forget to subscribe for more deep dives into the hidden forces shaping our world.`
-    }
+Key themes include agricultural productivity decline, extreme weather costs, insurance industry transformation, real estate market changes, and emerging green economy opportunities. The script balances concern with optimism, presenting challenges alongside innovative solutions and economic opportunities.`
   };
 
   const getEmotionalDepthLabel = (depth: number) => {
@@ -207,12 +171,12 @@ What economic impacts of climate change have you noticed in your daily life? Sha
 
           {/* Navigation Sidebar */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-24 shadow-lg">
+            <Card className="sticky top-24 shadow-lg mb-6">
               <CardHeader>
                 <CardTitle className="text-lg">Script Structure</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
-                <ScrollArea className="h-96">
+                <ScrollArea className="h-64">
                   <div className="p-6 space-y-2">
                     {scriptData.structure.map((section, index) => (
                       <div key={section.id}>
@@ -237,59 +201,63 @@ What economic impacts of climate change have you noticed in your daily life? Sha
                 </ScrollArea>
               </CardContent>
             </Card>
+
+            {/* Synopsis Section */}
+            <Card className="sticky top-96 shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-lg">Synopsis</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-sm text-gray-700 leading-relaxed">
+                  {scriptData.synopsis}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Content Section */}
+          {/* Content Section - Static content, not linked to structure */}
           <div className="lg:col-span-3">
             <Card className="shadow-lg">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-xl">
-                      {scriptData.structure.find(s => s.id === activeSection)?.title}
-                    </CardTitle>
+                    <CardTitle className="text-xl">Full Script Content</CardTitle>
                     <CardDescription>
-                      {scriptData.structure.find(s => s.id === activeSection)?.duration} • {scriptData.structure.find(s => s.id === activeSection)?.words} words
+                      Complete script ready for your video production
                     </CardDescription>
                   </div>
-                  <Progress 
-                    value={(scriptData.structure.findIndex(s => s.id === activeSection) + 1) / scriptData.structure.length * 100} 
-                    className="w-24"
-                  />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="prose prose-lg max-w-none">
-                  <div className="whitespace-pre-line text-gray-800 leading-relaxed">
-                    {scriptData.content[activeSection as keyof typeof scriptData.content]}
+                  <div className="whitespace-pre-line text-gray-800 leading-relaxed space-y-6">
+                    <div className="border-l-4 border-purple-500 pl-4">
+                      <h3 className="font-bold text-lg mb-2">Hook & Introduction</h3>
+                      <p>Did you know that climate change isn't just melting ice caps and causing extreme weather? It's quietly reshaping the global economy in ways that affect your daily life right now. From the coffee you drink to the mortgage rates you pay, climate change is an economic force that's already costing the world trillions of dollars annually.</p>
+                      <p>Today, we're diving deep into the hidden economic impacts of climate change – impacts that mainstream media often overlooks but that are fundamentally changing how money flows around the world.</p>
+                    </div>
+
+                    <div className="border-l-4 border-blue-500 pl-4">
+                      <h3 className="font-bold text-lg mb-2">Problem Statement</h3>
+                      <p>Here's the stark reality: climate change is costing the global economy approximately $150 billion annually, and this figure is accelerating rapidly. But these aren't just abstract numbers on a spreadsheet – they represent fundamental shifts in how our economic systems operate.</p>
+                      <p>The World Bank estimates that without immediate action, climate change could reduce global GDP by 10-23% by 2100. To put this in perspective, the 2008 financial crisis reduced global GDP by just 0.6%.</p>
+                    </div>
+
+                    <div className="border-l-4 border-green-500 pl-4">
+                      <h3 className="font-bold text-lg mb-2">Evidence & Data</h3>
+                      <p>Let's examine the data that reveals the true scope of this economic transformation:</p>
+                      <p>First, agricultural productivity has declined by 21% since 1961 due to climate change, according to Cornell University research. This isn't just about farmers – it directly impacts food prices globally.</p>
+                      <p>Second, extreme weather events caused $280 billion in damages in 2021 alone. Hurricane Ida cost $65 billion, while European floods caused $43 billion in damages.</p>
+                      <p>Third, the insurance industry is restructuring entirely. Swiss Re estimates that insurers face $23 trillion in climate-related losses by 2100.</p>
+                    </div>
+
+                    <div className="border-l-4 border-orange-500 pl-4">
+                      <h3 className="font-bold text-lg mb-2">Call to Action</h3>
+                      <p>The economic impact of climate change isn't a future problem – it's reshaping markets, investments, and opportunities right now. While the challenges are significant, they're also creating unprecedented opportunities for innovation and growth.</p>
+                      <p>As individuals and businesses, we can't afford to ignore these economic realities. Whether you're making investment decisions, career choices, or simply trying to understand why prices are changing, climate economics affects you.</p>
+                      <p>What economic impacts of climate change have you noticed in your daily life? Share your observations in the comments below, and don't forget to subscribe for more deep dives into the hidden forces shaping our world.</p>
+                    </div>
                   </div>
-                </div>
-                
-                <div className="mt-8 flex justify-between">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      const currentIndex = scriptData.structure.findIndex(s => s.id === activeSection);
-                      if (currentIndex > 0) {
-                        setActiveSection(scriptData.structure[currentIndex - 1].id);
-                      }
-                    }}
-                    disabled={scriptData.structure.findIndex(s => s.id === activeSection) === 0}
-                  >
-                    Previous Section
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      const currentIndex = scriptData.structure.findIndex(s => s.id === activeSection);
-                      if (currentIndex < scriptData.structure.length - 1) {
-                        setActiveSection(scriptData.structure[currentIndex + 1].id);
-                      }
-                    }}
-                    disabled={scriptData.structure.findIndex(s => s.id === activeSection) === scriptData.structure.length - 1}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600"
-                  >
-                    Next Section
-                  </Button>
                 </div>
               </CardContent>
             </Card>
