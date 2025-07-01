@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
@@ -17,7 +18,8 @@ import {
   Search, 
   Scale,
   Download,
-  Share
+  Share,
+  PlayCircle
 } from 'lucide-react';
 
 const ScriptDetails = () => {
@@ -51,7 +53,11 @@ The narrative begins with a compelling hook about climate change's economic impa
 
 Key themes include agricultural productivity decline, extreme weather costs, insurance industry transformation, real estate market changes, and emerging green economy opportunities. The script balances concern with optimism, presenting challenges alongside innovative solutions and economic opportunities.
 
-The script is structured to maintain audience attention through strategic pacing, incorporating both emotional appeals and logical arguments. Research-based facts are woven throughout to establish credibility, while real-world examples make complex economic concepts accessible to general audiences. Historical context provides perspective on current challenges, and the conclusion motivates viewers toward meaningful action.`
+The script is structured to maintain audience attention through strategic pacing, incorporating both emotional appeals and logical arguments. Research-based facts are woven throughout to establish credibility, while real-world examples make complex economic concepts accessible to general audiences. Historical context provides perspective on current challenges, and the conclusion motivates viewers toward meaningful action.
+
+This script leverages multiple research sources, statistical data from reputable organizations, and case studies from various industries affected by climate change. The content is designed to be both informative and engaging, suitable for educational content creators, documentary filmmakers, and news channels focusing on climate and economic issues.
+
+The emotional depth is carefully calibrated to connect with viewers without overwhelming them, using storytelling techniques that make complex economic data relatable and actionable. The script includes specific examples from different geographic regions and economic sectors to provide a comprehensive global perspective on climate change's economic implications.`
   };
 
   const getEmotionalDepthLabel = (depth: number) => {
@@ -87,91 +93,83 @@ The script is structured to maintain audience attention through strategic pacing
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Metrics Section */}
-          <div className="lg:col-span-4 mb-8">
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle>Script Metrics</CardTitle>
-                <CardDescription>
-                  Comprehensive analysis of your generated script
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-4 lg:grid-cols-8 gap-6">
-                  <div className="text-center">
-                    <FileText className="w-8 h-8 mx-auto mb-2 text-purple-600" />
-                    <div className="text-2xl font-bold text-gray-900">
-                      {scriptData.metrics.totalWords}
-                    </div>
-                    <div className="text-sm text-gray-600">Total Words</div>
+        {/* Metrics Section */}
+        <div className="mb-8">
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle>Script Metrics</CardTitle>
+              <CardDescription>
+                Comprehensive analysis of your generated script
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-4 lg:grid-cols-8 gap-6">
+                <div className="text-center">
+                  <FileText className="w-8 h-8 mx-auto mb-2 text-purple-600" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.totalWords}
                   </div>
-                  
-                  <div className="text-center">
-                    <Clock className="w-8 h-8 mx-auto mb-2 text-blue-600" />
-                    <div className="text-2xl font-bold text-gray-900">
-                      {scriptData.metrics.videoLength}m
-                    </div>
-                    <div className="text-sm text-gray-600">Video Length</div>
+                  <div className="text-sm text-gray-600">Total Words</div>
+                </div>
+                
+                <div className="text-center">
+                  <Heart className="w-8 h-8 mx-auto mb-2 text-red-500" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.emotionalDepth}%
                   </div>
-                  
-                  <div className="text-center">
-                    <Heart className="w-8 h-8 mx-auto mb-2 text-red-500" />
-                    <div className="text-2xl font-bold text-gray-900">
-                      {scriptData.metrics.emotionalDepth}%
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {getEmotionalDepthLabel(scriptData.metrics.emotionalDepth)}
-                    </div>
-                  </div>
-                  
-                  <div className="text-center">
-                    <Lightbulb className="w-8 h-8 mx-auto mb-2 text-yellow-500" />
-                    <div className="text-2xl font-bold text-gray-900">
-                      {scriptData.metrics.generalExamples}
-                    </div>
-                    <div className="text-sm text-gray-600">Examples</div>
-                  </div>
-                  
-                  <div className="text-center">
-                    <BookOpen className="w-8 h-8 mx-auto mb-2 text-green-600" />
-                    <div className="text-2xl font-bold text-gray-900">
-                      {scriptData.metrics.proverbs}
-                    </div>
-                    <div className="text-sm text-gray-600">Proverbs</div>
-                  </div>
-                  
-                  <div className="text-center">
-                    <History className="w-8 h-8 mx-auto mb-2 text-orange-600" />
-                    <div className="text-2xl font-bold text-gray-900">
-                      {scriptData.metrics.historicalFacts}
-                    </div>
-                    <div className="text-sm text-gray-600">Historical Facts</div>
-                  </div>
-                  
-                  <div className="text-center">
-                    <Search className="w-8 h-8 mx-auto mb-2 text-indigo-600" />
-                    <div className="text-2xl font-bold text-gray-900">
-                      {scriptData.metrics.researchFacts}
-                    </div>
-                    <div className="text-sm text-gray-600">Research Facts</div>
-                  </div>
-                  
-                  <div className="text-center">
-                    <Scale className="w-8 h-8 mx-auto mb-2 text-teal-600" />
-                    <div className="text-2xl font-bold text-gray-900">
-                      {scriptData.metrics.lawsIncluded}
-                    </div>
-                    <div className="text-sm text-gray-600">Laws Included</div>
+                  <div className="text-sm text-gray-600">
+                    {getEmotionalDepthLabel(scriptData.metrics.emotionalDepth)}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+                
+                <div className="text-center">
+                  <Lightbulb className="w-8 h-8 mx-auto mb-2 text-yellow-500" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.generalExamples}
+                  </div>
+                  <div className="text-sm text-gray-600">Examples</div>
+                </div>
+                
+                <div className="text-center">
+                  <BookOpen className="w-8 h-8 mx-auto mb-2 text-green-600" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.proverbs}
+                  </div>
+                  <div className="text-sm text-gray-600">Proverbs</div>
+                </div>
+                
+                <div className="text-center">
+                  <History className="w-8 h-8 mx-auto mb-2 text-orange-600" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.historicalFacts}
+                  </div>
+                  <div className="text-sm text-gray-600">Historical Facts</div>
+                </div>
+                
+                <div className="text-center">
+                  <Search className="w-8 h-8 mx-auto mb-2 text-indigo-600" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.researchFacts}
+                  </div>
+                  <div className="text-sm text-gray-600">Research Facts</div>
+                </div>
+                
+                <div className="text-center">
+                  <Scale className="w-8 h-8 mx-auto mb-2 text-teal-600" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.lawsIncluded}
+                  </div>
+                  <div className="text-sm text-gray-600">Laws Included</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-          {/* Script Structure Flow Diagram */}
+        <div className="grid lg:grid-cols-5 gap-8">
+          {/* Script Structure Flow Diagram - Narrower */}
           <div className="lg:col-span-2">
-            <Card className="shadow-lg mb-6">
+            <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle className="text-lg">Script Structure Flow</CardTitle>
                 <CardDescription>
@@ -179,20 +177,20 @@ The script is structured to maintain audience attention through strategic pacing
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {scriptData.structure.map((section, index) => (
                     <div key={section.id} className="flex items-center">
-                      <div className="flex flex-col items-center mr-4">
-                        <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                      <div className="flex flex-col items-center mr-3">
+                        <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs">
                           {index + 1}
                         </div>
                         {index < scriptData.structure.length - 1 && (
-                          <div className="w-0.5 h-8 bg-gradient-to-b from-purple-600 to-blue-600 mt-2"></div>
+                          <div className="w-0.5 h-6 bg-gradient-to-b from-purple-600 to-blue-600 mt-1"></div>
                         )}
                       </div>
-                      <div className="flex-1 bg-white/50 rounded-lg p-4 border border-gray-200">
-                        <h3 className="font-semibold text-gray-900 mb-1">{section.title}</h3>
-                        <div className="text-sm text-gray-600">
+                      <div className="flex-1 bg-white/50 rounded-lg p-3 border border-gray-200">
+                        <h3 className="font-semibold text-gray-900 mb-1 text-sm">{section.title}</h3>
+                        <div className="text-xs text-gray-600">
                           {section.duration} • {section.words} words
                         </div>
                       </div>
@@ -203,21 +201,31 @@ The script is structured to maintain audience attention through strategic pacing
             </Card>
           </div>
 
-          {/* Synopsis Section */}
-          <div className="lg:col-span-2">
+          {/* Synopsis Section - Wider with larger text */}
+          <div className="lg:col-span-3">
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-lg">Script Synopsis</CardTitle>
-                <CardDescription>
-                  Comprehensive overview of your script content and approach
-                </CardDescription>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg">Script Synopsis</CardTitle>
+                    <CardDescription>
+                      Comprehensive overview of your script content and approach
+                    </CardDescription>
+                  </div>
+                  <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+                    <PlayCircle className="w-4 h-4 mr-2" />
+                    Generate Script
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="prose prose-sm max-w-none">
-                  <div className="text-gray-700 leading-relaxed whitespace-pre-line text-sm">
-                    {scriptData.synopsis}
+                <ScrollArea className="h-96">
+                  <div className="prose prose-sm max-w-none">
+                    <div className="text-gray-700 leading-relaxed whitespace-pre-line text-base">
+                      {scriptData.synopsis}
+                    </div>
                   </div>
-                </div>
+                </ScrollArea>
               </CardContent>
             </Card>
           </div>

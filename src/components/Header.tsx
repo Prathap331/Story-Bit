@@ -13,11 +13,15 @@ const Header = () => {
 
           {/* Action Buttons */}
           <div className="flex items-center space-x-4">
-            <Button variant="outline" className="flex items-center">
-              <Crown className="w-4 h-4 mr-1 text-yellow-500" />
-              Upgrade
-            </Button>
-            <Button variant="outline">Sign In</Button>
+            <Link to="/pricing">
+              <Button variant="outline" className="flex items-center">
+                <Crown className="w-4 h-4 mr-1 text-yellow-500" />
+                Upgrade
+              </Button>
+            </Link>
+            <Link to="/auth">
+              <Button variant="outline">Sign In</Button>
+            </Link>
           </div>
         </div>
       </div>

@@ -83,7 +83,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             Write Script for YouTube Video{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
               in 3 Minutes
@@ -134,18 +134,18 @@ const Index = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
-                className="pl-12 pr-4 py-4 text-lg rounded-full border-2 border-gray-200 focus:border-purple-500 shadow-lg"
+                className="pl-12 pr-4 py-6 text-lg rounded-full border-2 border-gray-200 focus:border-purple-500 shadow-lg"
               />
               <Button
                 onClick={() => handleSearch(searchQuery)}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 px-6 py-3"
               >
-                Generate Script
+                Generate Ideas
               </Button>
             </div>
           </div>
 
-          {/* Topic Suggestions Grid */}
+          {/* Topic Suggestions - Free flowing layout */}
           <div className="max-w-6xl mx-auto">
             <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-sm">
               <CardHeader>
@@ -162,17 +162,17 @@ const Index = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <div className="flex flex-wrap gap-3 justify-center">
                   {currentSuggestions.map((topic, index) => (
                     <Button
                       key={index}
                       variant="outline"
                       onClick={() => handleSuggestionClick(topic)}
-                      className={`h-auto p-3 text-sm font-medium transition-colors hover:shadow-md ${
+                      className={`h-auto px-4 py-2 text-sm font-medium transition-all duration-200 rounded-full border-2 shadow-sm hover:shadow-md ${
                         selectedType === 'news' 
-                          ? 'hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700' 
-                          : 'hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700'
-                      }`}
+                          ? 'bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 text-purple-700 border-purple-200' 
+                          : 'bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 text-blue-700 border-blue-200'
+                      } whitespace-nowrap`}
                     >
                       {topic}
                     </Button>
