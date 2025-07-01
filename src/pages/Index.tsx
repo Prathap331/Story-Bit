@@ -5,7 +5,6 @@ import Header from '../components/Header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Search, TrendingUp, Film, Newspaper, Clock, Users } from 'lucide-react';
 
 const Index = () => {
@@ -81,21 +80,21 @@ const Index = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 py-12">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
             Write Script for YouTube Video{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
               in 3 Minutes
             </span>
           </h1>
-          <p className="text-xl text-gray-600 mb-12 leading-relaxed">
+          <p className="text-base text-gray-600 mb-8 leading-relaxed">
             Generate factual and research-based YouTube scripts for any type of videos. 
             Transform your ideas into engaging content with AI-powered scriptwriting.
           </p>
 
           {/* Type Selection Buttons */}
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-6">
             <div className="bg-white rounded-full p-2 shadow-lg">
               <Button
                 variant={selectedType === 'news' ? 'default' : 'ghost'}
@@ -125,7 +124,7 @@ const Index = () => {
           </div>
 
           {/* Search Section */}
-          <div className="max-w-2xl mx-auto mb-12">
+          <div className="max-w-2xl mx-auto mb-8">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
@@ -134,11 +133,11 @@ const Index = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
-                className="pl-12 pr-4 py-6 text-lg rounded-full border-2 border-gray-200 focus:border-purple-500 shadow-lg"
+                className="pl-12 pr-4 py-5 text-lg rounded-full border-2 border-gray-200 focus:border-purple-500 shadow-lg"
               />
               <Button
                 onClick={() => handleSearch(searchQuery)}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 px-6 py-3"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 px-6 py-2.5"
               >
                 Generate Ideas
               </Button>
@@ -168,7 +167,7 @@ const Index = () => {
                       key={index}
                       variant="outline"
                       onClick={() => handleSuggestionClick(topic)}
-                      className={`h-auto px-4 py-2 text-sm font-medium transition-all duration-200 rounded-full border-2 shadow-sm hover:shadow-md ${
+                      className={`h-auto px-4 py-3 text-sm font-medium transition-all duration-200 rounded-full border-2 shadow-sm hover:shadow-md ${
                         selectedType === 'news' 
                           ? 'bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 text-purple-700 border-purple-200' 
                           : 'bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 text-blue-700 border-blue-200'
@@ -183,7 +182,7 @@ const Index = () => {
           </div>
 
           {/* Features */}
-          <div className="mt-16 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="text-center p-6">
               <Clock className="w-12 h-12 mx-auto mb-4 text-purple-600" />
               <h3 className="text-lg font-semibold mb-2">Quick Generation</h3>
