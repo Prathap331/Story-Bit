@@ -19,7 +19,21 @@ const Index = () => {
     'Space Exploration Updates',
     'Cryptocurrency Market Trends',
     'Remote Work Future',
-    'Renewable Energy Breakthrough'
+    'Renewable Energy Breakthrough',
+    'Electric Vehicle Adoption',
+    'Social Media Privacy Laws',
+    'Quantum Computing Advances',
+    'Global Food Security Crisis',
+    'Mental Health Awareness',
+    'Cybersecurity Threats 2024',
+    'Green Technology Innovation',
+    'Digital Banking Evolution',
+    'Artificial Intelligence Ethics',
+    'Sustainable Fashion Movement',
+    'Smart City Development',
+    'Gene Therapy Breakthroughs',
+    'Virtual Reality Education',
+    'Ocean Plastic Pollution'
   ];
 
   const documentaryTopics = [
@@ -28,7 +42,21 @@ const Index = () => {
     'Wildlife Protection Stories',
     'Technology Evolution Timeline',
     'Human Psychology Insights',
-    'Cultural Heritage Preservation'
+    'Cultural Heritage Preservation',
+    'Space Race Documentary',
+    'Indigenous Communities',
+    'Environmental Activism',
+    'Scientific Discoveries',
+    'Art History Exploration',
+    'Music Evolution Journey',
+    'Food Culture Around World',
+    'Urban Development Stories',
+    'Adventure Sports Culture',
+    'Traditional Crafts Revival',
+    'Medical Breakthroughs',
+    'Educational Innovation',
+    'Social Justice Movements',
+    'Archaeological Discoveries'
   ];
 
   const handleSearch = (topic: string) => {
@@ -117,11 +145,11 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Single Suggestions Section */}
-          <div className="max-w-2xl mx-auto">
+          {/* Topic Suggestions Grid */}
+          <div className="max-w-6xl mx-auto">
             <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="flex items-center text-xl">
+                <CardTitle className="flex items-center justify-center text-xl">
                   {selectedType === 'news' ? (
                     <TrendingUp className="w-6 h-6 mr-2 text-purple-600" />
                   ) : (
@@ -129,33 +157,25 @@ const Index = () => {
                   )}
                   {suggestionTitle}
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-center">
                   {suggestionDescription}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
                   {currentSuggestions.map((topic, index) => (
-                    <div
+                    <Button
                       key={index}
+                      variant="outline"
                       onClick={() => handleSuggestionClick(topic)}
-                      className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors group ${
+                      className={`h-auto p-3 text-sm font-medium transition-colors hover:shadow-md ${
                         selectedType === 'news' 
-                          ? 'hover:bg-purple-50' 
-                          : 'hover:bg-blue-50'
+                          ? 'hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700' 
+                          : 'hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700'
                       }`}
                     >
-                      <span className={`font-medium ${
-                        selectedType === 'news'
-                          ? 'text-gray-700 group-hover:text-purple-700'
-                          : 'text-gray-700 group-hover:text-blue-700'
-                      }`}>
-                        {topic}
-                      </span>
-                      <Badge variant={selectedType === 'news' ? 'secondary' : 'outline'} className="text-xs">
-                        {selectedType === 'news' ? 'Hot' : 'Deep Dive'}
-                      </Badge>
-                    </div>
+                      {topic}
+                    </Button>
                   ))}
                 </div>
               </CardContent>
