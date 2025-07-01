@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -221,7 +220,7 @@ const SearchResults = () => {
                         <Clock className="w-4 h-4 mr-1" />
                         {statement.videoLength} min video
                       </div>
-                      <Badge variant="secondary" size="sm">
+                      <Badge variant="secondary">
                         {statement.category}
                       </Badge>
                     </div>
