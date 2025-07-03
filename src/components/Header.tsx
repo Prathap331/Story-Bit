@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Crown, Home } from 'lucide-react';
+import { Crown, Home, User } from 'lucide-react';
 
 const Header = () => {
   return (
@@ -26,6 +26,11 @@ const Header = () => {
             </Link>
             <Link to="/auth">
               <Button variant="outline">Sign In</Button>
+            </Link>
+            <Link to="/profile">
+              <Button variant="outline" size="icon">
+                <User className="w-4 h-4" />
+              </Button>
             </Link>
           </div>
         </div>
