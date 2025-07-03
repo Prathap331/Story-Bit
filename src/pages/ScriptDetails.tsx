@@ -19,7 +19,9 @@ import {
   Scale,
   Download,
   Share,
-  PlayCircle
+  Eye,
+  Link,
+  ExternalLink
 } from 'lucide-react';
 
 const ScriptDetails = () => {
@@ -57,7 +59,39 @@ The script is structured to maintain audience attention through strategic pacing
 
 This script leverages multiple research sources, statistical data from reputable organizations, and case studies from various industries affected by climate change. The content is designed to be both informative and engaging, suitable for educational content creators, documentary filmmakers, and news channels focusing on climate and economic issues.
 
-The emotional depth is carefully calibrated to connect with viewers without overwhelming them, using storytelling techniques that make complex economic data relatable and actionable. The script includes specific examples from different geographic regions and economic sectors to provide a comprehensive global perspective on climate change's economic implications.`
+The emotional depth is carefully calibrated to connect with viewers without overwhelming them, using storytelling techniques that make complex economic data relatable and actionable. The script includes specific examples from different geographic regions and economic sectors to provide a comprehensive global perspective on climate change's economic implications.`,
+    sources: [
+      {
+        title: "IPCC Climate Change and Land Report 2019",
+        url: "https://www.ipcc.ch/srccl/",
+        description: "Comprehensive analysis of climate change impacts on land use and agriculture"
+      },
+      {
+        title: "World Bank Climate Change Action Plan",
+        url: "https://www.worldbank.org/en/topic/climatechange",
+        description: "Economic analysis of climate change adaptation and mitigation strategies"
+      },
+      {
+        title: "McKinsey Global Institute Climate Risk Report",
+        url: "https://www.mckinsey.com/business-functions/sustainability/our-insights",
+        description: "Business and economic implications of physical climate risks"
+      },
+      {
+        title: "Federal Reserve Climate Risk Assessment",
+        url: "https://www.federalreserve.gov/econres/climate-change.htm",
+        description: "Financial system stability and climate-related economic risks"
+      },
+      {
+        title: "Nature Climate Change Journal",
+        url: "https://www.nature.com/nclimate/",
+        description: "Peer-reviewed research on climate science and economic impacts"
+      },
+      {
+        title: "UNEP Global Environment Outlook",
+        url: "https://www.unep.org/global-environment-outlook",
+        description: "Environmental and economic trends analysis from UN Environment Programme"
+      }
+    ]
   };
 
   const getEmotionalDepthLabel = (depth: number) => {
@@ -203,7 +237,7 @@ The emotional depth is carefully calibrated to connect with viewers without over
 
           {/* Synopsis Section - Wider with larger text */}
           <div className="lg:col-span-3">
-            <Card className="shadow-lg">
+            <Card className="shadow-lg mb-6">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
@@ -213,8 +247,8 @@ The emotional depth is carefully calibrated to connect with viewers without over
                     </CardDescription>
                   </div>
                   <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-                    <PlayCircle className="w-4 h-4 mr-2" />
-                    Generate Script
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Full Script
                   </Button>
                 </div>
               </CardHeader>
@@ -226,6 +260,44 @@ The emotional depth is carefully calibrated to connect with viewers without over
                     </div>
                   </div>
                 </ScrollArea>
+              </CardContent>
+            </Card>
+
+            {/* Sources Section */}
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center text-lg">
+                  <Link className="w-5 h-5 mr-2" />
+                  Research Sources
+                </CardTitle>
+                <CardDescription>
+                  Credible sources and references used in this script
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {scriptData.sources.map((source, index) => (
+                    <div key={index} className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                      <ExternalLink className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-900 mb-1">
+                          {source.title}
+                        </h4>
+                        <p className="text-sm text-gray-600 mb-2">
+                          {source.description}
+                        </p>
+                        <a 
+                          href={source.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:text-blue-800 underline"
+                        >
+                          {source.url}
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </div>
