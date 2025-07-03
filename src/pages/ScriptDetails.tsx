@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
@@ -21,7 +20,10 @@ import {
   Share,
   Eye,
   Link,
-  ExternalLink
+  ExternalLink,
+  Smile,
+  Frown,
+  Meh
 } from 'lucide-react';
 
 const ScriptDetails = () => {
@@ -34,6 +36,11 @@ const ScriptDetails = () => {
       totalWords: 1247,
       videoLength: 12.5,
       emotionalDepth: 75, // 0-100 scale
+      emotionalTones: {
+        positive: 35,
+        neutral: 40,
+        negative: 25
+      },
       generalExamples: 8,
       proverbs: 3,
       historicalExamples: 5,
@@ -137,7 +144,7 @@ The emotional depth is carefully calibrated to connect with viewers without over
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-4 lg:grid-cols-8 gap-6">
+              <div className="grid md:grid-cols-4 lg:grid-cols-9 gap-6">
                 <div className="text-center">
                   <FileText className="w-8 h-8 mx-auto mb-2 text-purple-600" />
                   <div className="text-2xl font-bold text-gray-900">
@@ -154,6 +161,30 @@ The emotional depth is carefully calibrated to connect with viewers without over
                   <div className="text-sm text-gray-600">
                     {getEmotionalDepthLabel(scriptData.metrics.emotionalDepth)}
                   </div>
+                </div>
+
+                <div className="text-center">
+                  <Smile className="w-8 h-8 mx-auto mb-2 text-green-500" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.emotionalTones.positive}%
+                  </div>
+                  <div className="text-sm text-gray-600">Positive Tone</div>
+                </div>
+
+                <div className="text-center">
+                  <Meh className="w-8 h-8 mx-auto mb-2 text-gray-500" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.emotionalTones.neutral}%
+                  </div>
+                  <div className="text-sm text-gray-600">Neutral Tone</div>
+                </div>
+
+                <div className="text-center">
+                  <Frown className="w-8 h-8 mx-auto mb-2 text-orange-500" />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {scriptData.metrics.emotionalTones.negative}%
+                  </div>
+                  <div className="text-sm text-gray-600">Negative Tone</div>
                 </div>
                 
                 <div className="text-center">
@@ -186,14 +217,6 @@ The emotional depth is carefully calibrated to connect with viewers without over
                     {scriptData.metrics.researchFacts}
                   </div>
                   <div className="text-sm text-gray-600">Research Facts</div>
-                </div>
-                
-                <div className="text-center">
-                  <Scale className="w-8 h-8 mx-auto mb-2 text-teal-600" />
-                  <div className="text-2xl font-bold text-gray-900">
-                    {scriptData.metrics.lawsIncluded}
-                  </div>
-                  <div className="text-sm text-gray-600">Laws Included</div>
                 </div>
               </div>
             </CardContent>
