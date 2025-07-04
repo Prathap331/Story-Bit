@@ -3,298 +3,347 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Search, TrendingUp, Film, Newspaper, Clock, Users, Sparkles, Video, Image, Music } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Search, 
+  Video, 
+  Zap, 
+  Clock, 
+  Users, 
+  Sparkles, 
+  TrendingUp, 
+  FileText, 
+  Play,
+  Star,
+  CheckCircle,
+  Image,
+  Film
+} from 'lucide-react';
 
 const Index = () => {
-  const [selectedType, setSelectedType] = useState('news');
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  const trendingNews = [
-    'AI Revolution in Healthcare',
-    'Climate Change Solutions 2024',
-    'Space Exploration Updates',
-    'Cryptocurrency Market Trends',
-    'Remote Work Future',
-    'Renewable Energy Breakthrough',
-    'Electric Vehicle Adoption',
-    'Social Media Privacy Laws',
-    'Quantum Computing Advances',
-    'Global Food Security Crisis',
-    'Mental Health Awareness',
-    'Cybersecurity Threats 2024',
-    'Green Technology Innovation',
-    'Digital Banking Evolution',
-    'Artificial Intelligence Ethics',
-    'Sustainable Fashion Movement',
-    'Smart City Development',
-    'Gene Therapy Breakthroughs',
-    'Virtual Reality Education',
-    'Ocean Plastic Pollution'
-  ];
-
-  const documentaryTopics = [
-    'Ocean Conservation Efforts',
-    'Ancient Civilizations Mystery',
-    'Wildlife Protection Stories',
-    'Technology Evolution Timeline',
-    'Human Psychology Insights',
-    'Cultural Heritage Preservation',
-    'Space Race Documentary',
-    'Indigenous Communities',
-    'Environmental Activism',
-    'Scientific Discoveries',
-    'Art History Exploration',
-    'Music Evolution Journey',
-    'Food Culture Around World',
-    'Urban Development Stories',
-    'Adventure Sports Culture',
-    'Traditional Crafts Revival',
-    'Medical Breakthroughs',
-    'Educational Innovation',
-    'Social Justice Movements',
-    'Archaeological Discoveries'
-  ];
-
-  const handleSearch = (topic: string) => {
-    if (topic.trim()) {
-      navigate(`/search/${encodeURIComponent(topic)}`);
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/search/${encodeURIComponent(searchQuery)}`);
     }
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    handleSearch(suggestion);
-  };
+  const trendingTopics = [
+    'Climate Change Impact',
+    'AI in Healthcare',
+    'Space Exploration',
+    'Cryptocurrency Future',
+    'Remote Work Revolution',
+    'Sustainable Energy'
+  ];
 
-  // Show suggestions based on selected type
-  const currentSuggestions = selectedType === 'news' ? trendingNews : documentaryTopics;
-  const suggestionTitle = selectedType === 'news' ? 'Trending News Topics' : 'Documentary Ideas';
-  const suggestionDescription = selectedType === 'news' 
-    ? 'Latest trending topics perfect for news-style videos'
-    : 'Compelling documentary subjects for in-depth exploration';
+  const features = [
+    {
+      icon: <Video className="w-12 h-12 text-purple-600" />,
+      title: "AI Script Generation",
+      description: "Generate compelling video scripts with advanced AI that understands your audience and creates engaging narratives."
+    },
+    {
+      icon: <Zap className="w-12 h-12 text-yellow-500" />,
+      title: "Lightning Fast",
+      description: "Create professional scripts in minutes, not hours. Our AI processes your ideas and delivers quality content instantly."
+    },
+    {
+      icon: <Users className="w-12 h-12 text-blue-600" />,
+      title: "Audience Targeting",
+      description: "Tailor your scripts for specific demographics and platforms to maximize engagement and reach."
+    },
+    {
+      icon: <Sparkles className="w-12 h-12 text-pink-500" />,
+      title: "Creative Enhancement",
+      description: "Add creative flair with built-in storytelling techniques, hooks, and calls-to-action that convert."
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Content Creator",
+      content: "ScriptAI has revolutionized my content creation process. I can now produce engaging scripts in half the time!",
+      rating: 5
+    },
+    {
+      name: "Mike Chen",
+      role: "Marketing Director",
+      content: "The quality and speed of script generation is incredible. Our video campaigns have never been more effective.",
+      rating: 5
+    },
+    {
+      name: "Emily Rodriguez",
+      role: "YouTuber",
+      content: "Finally, a tool that understands storytelling. My audience engagement has increased by 200% since using ScriptAI.",
+      rating: 5
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       <Header />
       
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-            Write Script for YouTube Video{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
-              in 3 Minutes
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            Create Compelling Video Scripts with{' '}
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              AI Magic
             </span>
           </h1>
-          <p className="text-base text-gray-600 mb-8 leading-relaxed">
-            Generate factual and research-based YouTube scripts for any type of videos. 
-            Transform your ideas into engaging content with AI-powered scriptwriting.
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Transform your ideas into engaging video scripts instantly. Our AI understands storytelling, 
+            audience psychology, and platform-specific requirements to create content that captivates and converts.
           </p>
-
-          {/* Type Selection Buttons */}
-          <div className="flex justify-center mb-6">
-            <div className="bg-white rounded-full p-2 shadow-lg">
-              <Button
-                variant={selectedType === 'news' ? 'default' : 'ghost'}
-                onClick={() => setSelectedType('news')}
-                className={`rounded-full px-8 py-3 mx-1 ${
-                  selectedType === 'news' 
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <Newspaper className="w-4 h-4 mr-2" />
-                News Stories
-              </Button>
-              <Button
-                variant={selectedType === 'documentaries' ? 'default' : 'ghost'}
-                onClick={() => setSelectedType('documentaries')}
-                className={`rounded-full px-8 py-3 mx-1 ${
-                  selectedType === 'documentaries' 
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <Film className="w-4 h-4 mr-2" />
-                Documentaries
-              </Button>
-            </div>
+          
+          {/* Search Bar */}
+          <div className="relative max-w-2xl mx-auto mb-8">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
+            <Input
+              type="text"
+              placeholder="Enter your video topic or idea..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              className="pl-12 pr-4 py-6 text-lg rounded-full border-2 border-gray-200 focus:border-purple-500 shadow-lg"
+            />
+            <Button
+              onClick={handleSearch}
+              size="lg"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 px-8 py-3"
+            >
+              Generate Script
+            </Button>
           </div>
 
-          {/* Search Section */}
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <Input
-                type="text"
-                placeholder="Search for topics, current events, or documentary subjects..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
-                className="pl-12 pr-4 py-5 text-lg rounded-full border-2 border-gray-200 focus:border-purple-500 shadow-lg"
-              />
-              <Button
-                onClick={() => handleSearch(searchQuery)}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 px-6 py-2.5"
+          {/* Trending Topics */}
+          <div className="flex flex-wrap justify-center gap-2 mb-12">
+            <span className="text-sm text-gray-500 mr-2">Trending:</span>
+            {trendingTopics.map((topic, index) => (
+              <Badge 
+                key={index} 
+                variant="secondary" 
+                className="cursor-pointer hover:bg-purple-100 transition-colors"
+                onClick={() => {
+                  setSearchQuery(topic);
+                  navigate(`/search/${encodeURIComponent(topic)}`);
+                }}
               >
-                Generate Ideas
-              </Button>
+                <TrendingUp className="w-3 h-3 mr-1" />
+                {topic}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="grid md:grid-cols-4 gap-8 mb-16">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-purple-600 mb-2">50K+</div>
+            <div className="text-gray-600">Scripts Generated</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-blue-600 mb-2">2M+</div>
+            <div className="text-gray-600">Words Written</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-green-600 mb-2">95%</div>
+            <div className="text-gray-600">User Satisfaction</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-orange-600 mb-2">30s</div>
+            <div className="text-gray-600">Average Generation Time</div>
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            Powerful Features for Content Creators
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="text-center hover:shadow-xl transition-shadow duration-300">
+                <CardHeader>
+                  <div className="mx-auto mb-4">
+                    {feature.icon}
+                  </div>
+                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-gray-600">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* How It Works Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            How It Works
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                1
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Enter Your Topic</h3>
+              <p className="text-gray-600">
+                Simply describe your video idea, target audience, and desired length. Our AI will understand your vision.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                2
+              </div>
+              <h3 className="text-xl font-semibold mb-3">AI Magic Happens</h3>
+              <p className="text-gray-600">
+                Our advanced AI analyzes trends, audience preferences, and storytelling techniques to craft your script.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                3
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Get Your Script</h3>
+              <p className="text-gray-600">
+                Receive a polished, engaging script ready for production. Edit, customize, and bring your vision to life.
+              </p>
             </div>
           </div>
+        </div>
 
-          {/* Topic Suggestions - Free flowing layout */}
-          <div className="max-w-6xl mx-auto">
-            <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-sm">
+        {/* Testimonials Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            What Our Users Say
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="hover:shadow-xl transition-shadow duration-300">
+                <CardContent className="pt-6">
+                  <div className="flex mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-gray-600 mb-4 italic">"{testimonial.content}"</p>
+                  <div>
+                    <div className="font-semibold">{testimonial.name}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role}</div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Coming Soon Section - Two Features Only */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            Coming Soon: AI Digital Assets
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Left Column - Image Generation */}
+            <Card className="hover:shadow-xl transition-shadow duration-300">
               <CardHeader>
-                <CardTitle className="flex items-center justify-center text-xl">
-                  {selectedType === 'news' ? (
-                    <TrendingUp className="w-6 h-6 mr-2 text-purple-600" />
-                  ) : (
-                    <Film className="w-6 h-6 mr-2 text-blue-600" />
-                  )}
-                  {suggestionTitle}
-                </CardTitle>
-                <CardDescription className="text-center">
-                  {suggestionDescription}
-                </CardDescription>
+                <div className="flex items-center justify-center mb-4">
+                  <Image className="w-16 h-16 text-purple-600" />
+                </div>
+                <CardTitle className="text-xl text-center">AI Image Generation</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-wrap gap-3 justify-center">
-                  {currentSuggestions.map((topic, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      onClick={() => handleSuggestionClick(topic)}
-                      className={`h-auto px-4 py-3 text-sm font-medium transition-all duration-200 rounded-full border-2 shadow-sm hover:shadow-md ${
-                        selectedType === 'news' 
-                          ? 'bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 text-purple-700 border-purple-200' 
-                          : 'bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 text-blue-700 border-blue-200'
-                      } whitespace-nowrap`}
-                    >
-                      {topic}
-                    </Button>
-                  ))}
+                <CardDescription className="text-gray-600 text-center">
+                  Generate custom thumbnails, graphics, and visual assets perfectly matched to your script content. 
+                  Create eye-catching visuals that complement your narrative and boost engagement.
+                </CardDescription>
+                <div className="mt-6 space-y-2">
+                  <div className="flex items-center text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                    Custom thumbnail generation
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                    Brand-consistent graphics
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                    Multiple style options
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Right Column - Video Clip Generation */}
+            <Card className="hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <div className="flex items-center justify-center mb-4">
+                  <Film className="w-16 h-16 text-blue-600" />
+                </div>
+                <CardTitle className="text-xl text-center">Video Clip Generation</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-gray-600 text-center">
+                  Transform your scripts into short video clips with AI-generated visuals, transitions, and effects. 
+                  Perfect for social media teasers and promotional content.
+                </CardDescription>
+                <div className="mt-6 space-y-2">
+                  <div className="flex items-center text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                    Automated video editing
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                    Platform-optimized formats
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                    Dynamic transitions
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
-
-          {/* Features */}
-          <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="text-center p-6">
-              <Clock className="w-12 h-12 mx-auto mb-4 text-purple-600" />
-              <h3 className="text-lg font-semibold mb-2">Quick Generation</h3>
-              <p className="text-gray-600">Create professional scripts in just 3 minutes</p>
-            </div>
-            <div className="text-center p-6">
-              <Users className="w-12 h-12 mx-auto mb-4 text-blue-600" />
-              <h3 className="text-lg font-semibold mb-2">Research-Based</h3>
-              <p className="text-gray-600">All content backed by factual research and data</p>
-            </div>
-            <div className="text-center p-6">
-              <Film className="w-12 h-12 mx-auto mb-4 text-indigo-600" />
-              <h3 className="text-lg font-semibold mb-2">Multiple Formats</h3>
-              <p className="text-gray-600">News stories, documentaries, and more</p>
-            </div>
-          </div>
         </div>
-      </section>
 
-      {/* Upcoming Features Section */}
-      <section className="container mx-auto px-4 py-16 bg-white/50 backdrop-blur-sm">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Images */}
-          <div className="space-y-6">
-            <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop" 
-                alt="AI Video Creation" 
-                className="rounded-xl shadow-lg w-full h-64 object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-xl"></div>
-              <div className="absolute bottom-4 left-4 text-white">
-                <h4 className="font-semibold">AI-Generated B-Roll</h4>
-                <p className="text-sm opacity-90">Perfect footage for every scene</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <img 
-                src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop" 
-                alt="Digital Assets" 
-                className="rounded-lg shadow-md h-32 object-cover"
-              />
-              <img 
-                src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop" 
-                alt="Video Editing" 
-                className="rounded-lg shadow-md h-32 object-cover"
-              />
-            </div>
-          </div>
-
-          {/* Right Column - Features */}
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Coming Soon: AI-Generated 
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
-                  {' '}Digital Assets
-                </span>
-              </h2>
-              <p className="text-gray-600 text-lg">
-                Take your video creation to the next level with our upcoming AI-powered tools
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <div className="bg-purple-100 p-3 rounded-lg">
-                  <Video className="w-6 h-6 text-purple-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">AI B-Roll Generation</h3>
-                  <p className="text-gray-600">Generate contextual video footage that perfectly matches your script</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-lg">
-                  <Image className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">Custom Graphics & Charts</h3>
-                  <p className="text-gray-600">Auto-generate infographics and visual elements from your data</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="bg-indigo-100 p-3 rounded-lg">
-                  <Music className="w-6 h-6 text-indigo-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">Background Music & SFX</h3>
-                  <p className="text-gray-600">AI-composed soundtracks tailored to your content's mood</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="bg-green-100 p-3 rounded-lg">
-                  <Sparkles className="w-6 h-6 text-green-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">Voice Synthesis</h3>
-                  <p className="text-gray-600">Professional narration with customizable AI voices</p>
-                </div>
-              </div>
-            </div>
-
-            <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-              Join the Waitlist
+        {/* CTA Section */}
+        <div className="text-center bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-12 text-white">
+          <h2 className="text-3xl font-bold mb-4">
+            Ready to Create Amazing Scripts?
+          </h2>
+          <p className="text-xl mb-8 opacity-90">
+            Join thousands of content creators who trust ScriptAI for their video production needs.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              onClick={handleSearch}
+              className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
+            >
+              <Play className="w-5 h-5 mr-2" />
+              Start Creating Now
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg font-semibold"
+            >
+              <FileText className="w-5 h-5 mr-2" />
+              View Examples
             </Button>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

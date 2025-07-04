@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
@@ -27,10 +26,10 @@ const ScriptDetails = () => {
   const { id } = useParams();
   const [scriptViewed, setScriptViewed] = useState(false);
   const [showTranslateOptions, setShowTranslateOptions] = useState(false);
+  const [showTeleprompterOptions, setShowTeleprompterOptions] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [searchLanguage, setSearchLanguage] = useState('');
 
-  // Mock script data
   const scriptData = {
     title: "The Hidden Impact of Climate Change on Global Economy",
     metrics: {
@@ -120,6 +119,10 @@ The emotional depth is carefully calibrated to connect with viewers without over
 
   const handleTranslate = () => {
     setShowTranslateOptions(!showTranslateOptions);
+  };
+
+  const handleTeleprompter = () => {
+    setShowTeleprompterOptions(!showTeleprompterOptions);
   };
 
   const handleDownload = () => {
@@ -322,10 +325,9 @@ The emotional depth is carefully calibrated to connect with viewers without over
                   >
                     <Eye className="w-5 h-5 mr-2" />
                     View Full Script
-                    <Download className="w-4 h-4 ml-2" />
                   </Button>
 
-                  {/* Action Buttons Row */}
+                  {/* Action Buttons Row - Equal width buttons next to each other */}
                   <div className="grid grid-cols-3 gap-3">
                     {/* Translate Button */}
                     <div className="relative">
@@ -338,7 +340,6 @@ The emotional depth is carefully calibrated to connect with viewers without over
                       >
                         <Languages className="w-4 h-4 mr-1" />
                         Translate
-                        <Download className="w-3 h-3 ml-1" />
                       </Button>
 
                       {showTranslateOptions && scriptViewed && (
@@ -372,7 +373,6 @@ The emotional depth is carefully calibrated to connect with viewers without over
                                     }}
                                   >
                                     {language}
-                                    <Download className="w-3 h-3 ml-auto" />
                                   </Button>
                                 ))}
                               </div>
@@ -383,16 +383,54 @@ The emotional depth is carefully calibrated to connect with viewers without over
                     </div>
 
                     {/* Teleprompter Button */}
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="w-full"
-                      disabled={!scriptViewed}
-                    >
-                      <Monitor className="w-4 h-4 mr-1" />
-                      Teleprompter
-                      <ChevronDown className="w-3 h-3 ml-1" />
-                    </Button>
+                    <div className="relative">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                        onClick={handleTeleprompter}
+                        disabled={!scriptViewed}
+                      >
+                        <Monitor className="w-4 h-4 mr-1" />
+                        Teleprompter
+                      </Button>
+
+                      {showTeleprompterOptions && scriptViewed && (
+                        <Card className="absolute top-full mt-2 w-60 z-50 shadow-lg">
+                          <CardHeader>
+                            <CardTitle className="text-base">Teleprompter Options</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full justify-start text-sm"
+                                onClick={() => {
+                                  console.log('Open teleprompter');
+                                  setShowTeleprompterOptions(false);
+                                }}
+                              >
+                                <Monitor className="w-4 h-4 mr-2" />
+                                Open Teleprompter
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full justify-start text-sm"
+                                onClick={() => {
+                                  handleDownload();
+                                  setShowTeleprompterOptions(false);
+                                }}
+                              >
+                                <Download className="w-4 h-4 mr-2" />
+                                Download Script
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+                    </div>
 
                     {/* Download Button */}
                     <Button
