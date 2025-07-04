@@ -15,49 +15,72 @@ import {
   Calendar,
   Eye,
   Heart,
-  MessageCircle
+  MessageCircle,
+  Filter
 } from 'lucide-react';
 
 const SearchResults = () => {
   const { topic } = useParams();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState(topic || '');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [minutesInput, setMinutesInput] = useState('');
+
+  const categories = [
+    'All',
+    'Technology',
+    'Science',
+    'Business',
+    'Health',
+    'Entertainment',
+    'Education',
+    'Politics',
+    'Sports',
+    'Travel'
+  ];
 
   const mockResults = [
     {
       id: 1,
-      title: "The Hidden Economic Impact of Climate Change on Small Businesses",
+      title: "The Hidden Economic Impact of Climate Change",
       description: "Explore how rising temperatures and extreme weather events are reshaping local economies and what entrepreneurs can do to adapt.",
+      snippet: "Did you know that 43% of small businesses affected by climate disasters never reopen? This comprehensive analysis reveals...",
       estimatedLength: "8-12 minutes",
       difficulty: "Intermediate",
       trending: true,
       engagement: { views: "2.3M", likes: "45K", comments: "1.2K" },
       tags: ["Economics", "Climate", "Business", "Current Events"],
-      hook: "Did you know that 43% of small businesses affected by climate disasters never reopen?"
+      category: "Business"
     },
     {
       id: 2,
-      title: "Why Climate Scientists Are More Worried Than Ever in 2024",
+      title: "Why Climate Scientists Are More Worried Than Ever",
       description: "Latest research reveals accelerating climate patterns that have experts reconsidering previous projections and timelines.",
+      snippet: "Three major climate tipping points may have already been crossed, according to new data from leading research institutions...",
       estimatedLength: "10-15 minutes",
       difficulty: "Advanced",
       trending: false,
       engagement: { views: "1.8M", likes: "38K", comments: "892" },
       tags: ["Science", "Research", "Climate Change", "Documentary"],
-      hook: "Three major climate tipping points may have already been crossed, according to new data."
+      category: "Science"
     },
     {
       id: 3,
       title: "The Unexpected Winners in a Warming World",
-      description: "Some regions and industries are finding opportunities amid climate change challenges, creating complex ethical and economic questions.",
+      description: "Some regions and industries are finding opportunities amid climate change challenges, creating complex ethical questions.",
+      snippet: "While most suffer from climate change, some are quietly profiting from our warming planet. This investigation uncovers...",
       estimatedLength: "6-10 minutes",
       difficulty: "Beginner",
       trending: true,
       engagement: { views: "3.1M", likes: "67K", comments: "2.4K" },
       tags: ["Economics", "Geography", "Adaptation", "Controversy"],
-      hook: "While most suffer from climate change, some are quietly profiting from our warming planet."
+      category: "Business"
     }
   ];
+
+  const filteredResults = selectedCategory === 'All' 
+    ? mockResults 
+    : mockResults.filter(result => result.category === selectedCategory);
 
   const handleSearch = (query: string) => {
     if (query.trim()) {
@@ -65,7 +88,8 @@ const SearchResults = () => {
     }
   };
 
-  const handleGenerateScript = (scriptId: number) => {
+  const handleGenerateScript = (scriptId: number, minutes?: string) => {
+    console.log(`Generating script ${scriptId} with ${minutes || 'default'} minutes`);
     navigate(`/script/${scriptId}`);
   };
 
@@ -103,92 +127,137 @@ const SearchResults = () => {
           </div>
         </div>
 
-        {/* Results Section */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">Script Ideas</h2>
-              <p className="text-gray-600 mt-1">
-                {mockResults.length} script ideas found for "{topic}"
-              </p>
+        <div className="flex gap-8">
+          {/* Left Sidebar - Category Filters */}
+          <div className="w-64 bg-white rounded-lg shadow-lg p-6 h-fit">
+            <div className="flex items-center mb-4">
+              <Filter className="w-5 h-5 mr-2 text-gray-600" />
+              <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
             </div>
-            <div className="flex items-center space-x-4">
-              <Badge variant="outline" className="bg-green-50 text-green-700">
-                <TrendingUp className="w-3 h-3 mr-1" />
-                Trending Topics
-              </Badge>
-              <Badge variant="outline" className="bg-blue-50 text-blue-700">
-                <Clock className="w-3 h-3 mr-1" />
-                Quick Generation
-              </Badge>
+            
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-gray-700 mb-3">Categories</h4>
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                    selectedCategory === category
+                      ? 'bg-purple-100 text-purple-700 font-medium'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Script Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockResults.map((script) => (
-              <Card key={script.id} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold">{script.title}</CardTitle>
-                  <CardDescription className="text-gray-600 mt-2">
-                    {script.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center space-x-3 text-sm text-gray-500 mb-3">
-                    <div className="flex items-center">
-                      <Clock className="w-4 h-4 mr-1" />
-                      {script.estimatedLength}
-                    </div>
-                    <div className="flex items-center">
-                      <FileText className="w-4 h-4 mr-1" />
-                      {script.difficulty}
-                    </div>
-                    {script.trending && (
-                      <Badge variant="outline" className="bg-yellow-50 text-yellow-700">
-                        <TrendingUp className="w-3 h-3 mr-1" />
-                        Trending
-                      </Badge>
-                    )}
-                  </div>
+          {/* Main Content */}
+          <div className="flex-1">
+            {/* Results Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Script Ideas</h2>
+                <p className="text-gray-600 mt-1">
+                  {filteredResults.length} script ideas found for "{topic}"
+                </p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <Badge variant="outline" className="bg-green-50 text-green-700">
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  Trending Topics
+                </Badge>
+                <Badge variant="outline" className="bg-blue-50 text-blue-700">
+                  <Clock className="w-3 h-3 mr-1" />
+                  Quick Generation
+                </Badge>
+              </div>
+            </div>
 
-                  {/* Engagement Metrics */}
-                  <div className="flex items-center space-x-4 text-gray-500 text-sm mb-4">
-                    <div className="flex items-center">
-                      <Eye className="w-4 h-4 mr-1" />
-                      {script.engagement.views}
+            {/* Script Cards */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {filteredResults.map((script) => (
+                <Card key={script.id} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <CardTitle className="text-lg font-semibold text-blue-600 hover:text-blue-700 cursor-pointer">
+                        {script.title}
+                      </CardTitle>
+                      {script.trending && (
+                        <Badge variant="outline" className="bg-yellow-50 text-yellow-700 ml-2">
+                          <TrendingUp className="w-3 h-3 mr-1" />
+                          Trending
+                        </Badge>
+                      )}
                     </div>
-                    <div className="flex items-center">
-                      <Heart className="w-4 h-4 mr-1" />
-                      {script.engagement.likes}
+                    <CardDescription className="text-gray-600 mt-2">
+                      {script.description}
+                    </CardDescription>
+                    <p className="text-sm text-gray-500 italic mt-2">
+                      {script.snippet}
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center space-x-3 text-sm text-gray-500 mb-3">
+                      <div className="flex items-center">
+                        <Clock className="w-4 h-4 mr-1" />
+                        {script.estimatedLength}
+                      </div>
+                      <div className="flex items-center">
+                        <FileText className="w-4 h-4 mr-1" />
+                        {script.difficulty}
+                      </div>
                     </div>
-                    <div className="flex items-center">
-                      <MessageCircle className="w-4 h-4 mr-1" />
-                      {script.engagement.comments}
+
+                    {/* Engagement Metrics */}
+                    <div className="flex items-center space-x-4 text-gray-500 text-sm mb-4">
+                      <div className="flex items-center">
+                        <Eye className="w-4 h-4 mr-1" />
+                        {script.engagement.views}
+                      </div>
+                      <div className="flex items-center">
+                        <Heart className="w-4 h-4 mr-1" />
+                        {script.engagement.likes}
+                      </div>
+                      <div className="flex items-center">
+                        <MessageCircle className="w-4 h-4 mr-1" />
+                        {script.engagement.comments}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {script.tags.map((tag, index) => (
-                      <Badge key={index} variant="secondary" className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {script.tags.map((tag, index) => (
+                        <Badge key={index} variant="secondary" className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
 
-                  {/* Hook */}
-                  <div className="text-gray-700 italic text-sm mb-4">
-                    "{script.hook}"
-                  </div>
-
-                  {/* Generate Script Button */}
-                  <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700" onClick={() => handleGenerateScript(script.id)}>
-                    Generate Script
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                    {/* Minutes Input and Generate Button */}
+                    <div className="flex gap-2 mt-4">
+                      <Input
+                        type="number"
+                        placeholder="Minutes"
+                        value={minutesInput}
+                        onChange={(e) => setMinutesInput(e.target.value)}
+                        className="flex-1"
+                        min="1"
+                        max="60"
+                      />
+                      <Button 
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                        onClick={() => handleGenerateScript(script.id, minutesInput)}
+                      >
+                        <PlayCircle className="w-4 h-4 mr-1" />
+                        Generate Script
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </div>
