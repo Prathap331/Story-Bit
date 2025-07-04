@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Search, TrendingUp, Film, Newspaper, Clock, Users } from 'lucide-react';
+import { Search, TrendingUp, Film, Newspaper, Clock, Users, Sparkles, Video, Image, Music } from 'lucide-react';
 
 const Index = () => {
   const [selectedType, setSelectedType] = useState('news');
@@ -198,6 +198,100 @@ const Index = () => {
               <h3 className="text-lg font-semibold mb-2">Multiple Formats</h3>
               <p className="text-gray-600">News stories, documentaries, and more</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Upcoming Features Section */}
+      <section className="container mx-auto px-4 py-16 bg-white/50 backdrop-blur-sm">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column - Images */}
+          <div className="space-y-6">
+            <div className="relative">
+              <img 
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop" 
+                alt="AI Video Creation" 
+                className="rounded-xl shadow-lg w-full h-64 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-xl"></div>
+              <div className="absolute bottom-4 left-4 text-white">
+                <h4 className="font-semibold">AI-Generated B-Roll</h4>
+                <p className="text-sm opacity-90">Perfect footage for every scene</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <img 
+                src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=300&h=200&fit=crop" 
+                alt="Digital Assets" 
+                className="rounded-lg shadow-md h-32 object-cover"
+              />
+              <img 
+                src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop" 
+                alt="Video Editing" 
+                className="rounded-lg shadow-md h-32 object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Right Column - Features */}
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Coming Soon: AI-Generated 
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
+                  {' '}Digital Assets
+                </span>
+              </h2>
+              <p className="text-gray-600 text-lg">
+                Take your video creation to the next level with our upcoming AI-powered tools
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="bg-purple-100 p-3 rounded-lg">
+                  <Video className="w-6 h-6 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">AI B-Roll Generation</h3>
+                  <p className="text-gray-600">Generate contextual video footage that perfectly matches your script</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="bg-blue-100 p-3 rounded-lg">
+                  <Image className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Custom Graphics & Charts</h3>
+                  <p className="text-gray-600">Auto-generate infographics and visual elements from your data</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="bg-indigo-100 p-3 rounded-lg">
+                  <Music className="w-6 h-6 text-indigo-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Background Music & SFX</h3>
+                  <p className="text-gray-600">AI-composed soundtracks tailored to your content's mood</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="bg-green-100 p-3 rounded-lg">
+                  <Sparkles className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Voice Synthesis</h3>
+                  <p className="text-gray-600">Professional narration with customizable AI voices</p>
+                </div>
+              </div>
+            </div>
+
+            <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+              Join the Waitlist
+            </Button>
           </div>
         </div>
       </section>

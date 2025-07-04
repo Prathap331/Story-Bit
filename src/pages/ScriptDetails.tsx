@@ -222,10 +222,10 @@ The emotional depth is carefully calibrated to connect with viewers without over
           </CardContent>
         </Card>
 
-        {/* Main Content - Two Column Layout */}
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Left Column - Script Structure & Sources */}
-          <div className="space-y-6">
+        {/* Main Content - Two Column Layout with adjusted proportions */}
+        <div className="grid lg:grid-cols-5 gap-8">
+          {/* Left Column - Script Structure & Sources (2/5 width) */}
+          <div className="lg:col-span-2 space-y-6">
             {/* Script Structure */}
             <Card className="shadow-lg">
               <CardHeader>
@@ -297,8 +297,8 @@ The emotional depth is carefully calibrated to connect with viewers without over
             </Card>
           </div>
 
-          {/* Right Column - Synopsis & Action Buttons */}
-          <div className="space-y-6">
+          {/* Right Column - Synopsis & Action Buttons (3/5 width) */}
+          <div className="lg:col-span-3 space-y-6">
             {/* Synopsis */}
             <Card className="shadow-lg">
               <CardHeader>
@@ -306,9 +306,105 @@ The emotional depth is carefully calibrated to connect with viewers without over
                 <CardDescription>
                   Comprehensive overview of your script content and approach
                 </CardDescription>
+                
+                {/* Action Buttons moved to top of synopsis */}
+                <div className="pt-4 space-y-3">
+                  {/* View Full Script Button */}
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700"
+                    onClick={handleViewFullScript}
+                  >
+                    <Eye className="w-5 h-5 mr-2" />
+                    View Full Script
+                    <Download className="w-4 h-4 ml-2" />
+                  </Button>
+
+                  {/* Action Buttons Row */}
+                  <div className="grid grid-cols-3 gap-3">
+                    {/* Translate Button */}
+                    <div className="relative">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                        onClick={handleTranslate}
+                        disabled={!scriptViewed}
+                      >
+                        <Languages className="w-4 h-4 mr-1" />
+                        Translate
+                        <Download className="w-3 h-3 ml-1" />
+                      </Button>
+
+                      {showTranslateOptions && scriptViewed && (
+                        <Card className="absolute top-full mt-2 w-80 z-50 shadow-lg">
+                          <CardHeader>
+                            <CardTitle className="text-base">Select Language</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-3">
+                              <div className="flex space-x-2">
+                                <Input
+                                  placeholder="Search languages..."
+                                  value={searchLanguage}
+                                  onChange={(e) => setSearchLanguage(e.target.value)}
+                                  className="flex-1 text-sm"
+                                />
+                                <Button size="sm">
+                                  <Search className="w-4 h-4" />
+                                </Button>
+                              </div>
+                              <div className="max-h-40 overflow-y-auto space-y-1">
+                                {filteredLanguages.map((language) => (
+                                  <Button
+                                    key={language}
+                                    variant="outline"
+                                    size="sm"
+                                    className="w-full justify-start text-sm"
+                                    onClick={() => {
+                                      setSelectedLanguage(language);
+                                      setShowTranslateOptions(false);
+                                    }}
+                                  >
+                                    {language}
+                                    <Download className="w-3 h-3 ml-auto" />
+                                  </Button>
+                                ))}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+                    </div>
+
+                    {/* Teleprompter Button */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="w-full"
+                      disabled={!scriptViewed}
+                    >
+                      <Monitor className="w-4 h-4 mr-1" />
+                      Teleprompter
+                      <ChevronDown className="w-3 h-3 ml-1" />
+                    </Button>
+
+                    {/* Download Button */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="w-full"
+                      onClick={handleDownload}
+                      disabled={!scriptViewed}
+                    >
+                      <Download className="w-4 h-4 mr-1" />
+                      Download
+                    </Button>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
-                <ScrollArea className="h-[400px]">
+                <ScrollArea className="h-[500px]">
                   <div className="prose prose-sm max-w-none">
                     <div className="text-gray-700 leading-relaxed whitespace-pre-line text-base">
                       {scriptData.synopsis}
@@ -317,87 +413,6 @@ The emotional depth is carefully calibrated to connect with viewers without over
                 </ScrollArea>
               </CardContent>
             </Card>
-
-            {/* Action Buttons */}
-            <div className="space-y-4">
-              {/* View Full Script Button */}
-              <Button 
-                size="lg" 
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700"
-                onClick={handleViewFullScript}
-              >
-                <Eye className="w-5 h-5 mr-2" />
-                View Full Script
-                <Download className="w-4 h-4 ml-2" />
-              </Button>
-
-              {/* Translate Button */}
-              <div className="relative">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full"
-                  onClick={handleTranslate}
-                  disabled={!scriptViewed}
-                >
-                  <Languages className="w-5 h-5 mr-2" />
-                  Translate
-                  <Search className="w-4 h-4 ml-2" />
-                  <ChevronDown className="w-4 h-4 ml-1" />
-                </Button>
-
-                {showTranslateOptions && scriptViewed && (
-                  <Card className="absolute top-full mt-2 w-full z-50 shadow-lg">
-                    <CardHeader>
-                      <CardTitle className="text-lg">Select Language</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div className="flex space-x-2">
-                          <Input
-                            placeholder="Search languages..."
-                            value={searchLanguage}
-                            onChange={(e) => setSearchLanguage(e.target.value)}
-                            className="flex-1"
-                          />
-                          <Button size="sm">
-                            <Search className="w-4 h-4" />
-                          </Button>
-                        </div>
-                        <div className="max-h-40 overflow-y-auto space-y-1">
-                          {filteredLanguages.map((language) => (
-                            <Button
-                              key={language}
-                              variant="outline"
-                              className="w-full justify-start"
-                              onClick={() => {
-                                setSelectedLanguage(language);
-                                setShowTranslateOptions(false);
-                              }}
-                            >
-                              {language}
-                              <Download className="w-4 h-4 ml-auto" />
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-
-              {/* Teleprompter Button */}
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full"
-                disabled={!scriptViewed}
-              >
-                <Monitor className="w-5 h-5 mr-2" />
-                Teleprompter
-                <ChevronDown className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
           </div>
         </div>
       </div>
