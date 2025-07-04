@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Slider } from '@/components/ui/slider';
 import { 
   Search, 
   Video, 
@@ -19,11 +20,14 @@ import {
   Star,
   CheckCircle,
   Image,
-  Film
+  Film,
+  Newspaper,
+  Camera
 } from 'lucide-react';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [contentType, setContentType] = useState([50]); // 0 = News, 100 = Documentaries, 50 = middle
   const navigate = useNavigate();
 
   const handleSearch = () => {
@@ -32,14 +36,34 @@ const Index = () => {
     }
   };
 
-  const trendingTopics = [
-    'Climate Change Impact',
-    'AI in Healthcare',
-    'Space Exploration',
-    'Cryptocurrency Future',
-    'Remote Work Revolution',
-    'Sustainable Energy'
+  const getContentTypeLabel = () => {
+    if (contentType[0] < 25) return 'News Stories';
+    if (contentType[0] > 75) return 'Documentaries';
+    return 'Mixed Content';
+  };
+
+  const trendingNews = [
+    'AI Breakthrough in Medicine',
+    'Climate Summit 2024 Results',
+    'Space Mission to Mars Update',
+    'Cryptocurrency Market Shift',
+    'Tech Giants Merger News',
+    'Global Economic Outlook'
   ];
+
+  const documentaryTopics = [
+    'Ocean Mysteries Unveiled',
+    'Ancient Civilizations Lost',
+    'Future of Renewable Energy',
+    'Wildlife Conservation Crisis',
+    'Human Brain Exploration',
+    'Space Exploration History'
+  ];
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchQuery(suggestion);
+    navigate(`/search/${encodeURIComponent(suggestion)}`);
+  };
 
   const features = [
     {
@@ -93,22 +117,45 @@ const Index = () => {
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Create Compelling Video Scripts with{' '}
+            Write Script for Youtube Video in{' '}
             <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              AI Magic
+              3 Minutes
             </span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Transform your ideas into engaging video scripts instantly. Our AI understands storytelling, 
-            audience psychology, and platform-specific requirements to create content that captivates and converts.
+            Generate factual and research based youtube script for any type of videos
           </p>
           
+          {/* Content Type Slider */}
+          <div className="max-w-md mx-auto mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <Newspaper className="w-5 h-5 mr-2 text-blue-600" />
+                <span className="text-sm font-medium text-gray-700">News Stories</span>
+              </div>
+              <div className="flex items-center">
+                <Camera className="w-5 h-5 mr-2 text-purple-600" />
+                <span className="text-sm font-medium text-gray-700">Documentaries</span>
+              </div>
+            </div>
+            <Slider
+              value={contentType}
+              onValueChange={setContentType}
+              max={100}
+              step={1}
+              className="w-full"
+            />
+            <div className="text-center mt-2">
+              <span className="text-sm font-medium text-gray-800">{getContentTypeLabel()}</span>
+            </div>
+          </div>
+
           {/* Search Bar */}
           <div className="relative max-w-2xl mx-auto mb-8">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
             <Input
               type="text"
-              placeholder="Enter your video topic or idea..."
+              placeholder="Search for topics, current events, or documentary ideas..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -123,23 +170,49 @@ const Index = () => {
             </Button>
           </div>
 
-          {/* Trending Topics */}
-          <div className="flex flex-wrap justify-center gap-2 mb-12">
-            <span className="text-sm text-gray-500 mr-2">Trending:</span>
-            {trendingTopics.map((topic, index) => (
-              <Badge 
-                key={index} 
-                variant="secondary" 
-                className="cursor-pointer hover:bg-purple-100 transition-colors"
-                onClick={() => {
-                  setSearchQuery(topic);
-                  navigate(`/search/${encodeURIComponent(topic)}`);
-                }}
-              >
-                <TrendingUp className="w-3 h-3 mr-1" />
-                {topic}
-              </Badge>
-            ))}
+          {/* Trending Suggestions */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Trending News */}
+              <div>
+                <div className="flex items-center justify-center mb-4">
+                  <TrendingUp className="w-5 h-5 mr-2 text-blue-600" />
+                  <h3 className="text-lg font-semibold text-gray-900">Trending News Topics</h3>
+                </div>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {trendingNews.map((topic, index) => (
+                    <Badge 
+                      key={index} 
+                      variant="secondary" 
+                      className="cursor-pointer hover:bg-blue-100 transition-colors bg-blue-50 text-blue-700"
+                      onClick={() => handleSuggestionClick(topic)}
+                    >
+                      {topic}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Documentary Topics */}
+              <div>
+                <div className="flex items-center justify-center mb-4">
+                  <Camera className="w-5 h-5 mr-2 text-purple-600" />
+                  <h3 className="text-lg font-semibold text-gray-900">Interesting Documentary Ideas</h3>
+                </div>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {documentaryTopics.map((topic, index) => (
+                    <Badge 
+                      key={index} 
+                      variant="secondary" 
+                      className="cursor-pointer hover:bg-purple-100 transition-colors bg-purple-50 text-purple-700"
+                      onClick={() => handleSuggestionClick(topic)}
+                    >
+                      {topic}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -197,18 +270,18 @@ const Index = () => {
               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
                 1
               </div>
-              <h3 className="text-xl font-semibold mb-3">Enter Your Topic</h3>
+              <h3 className="text-xl font-semibold mb-3">Choose Content Type</h3>
               <p className="text-gray-600">
-                Simply describe your video idea, target audience, and desired length. Our AI will understand your vision.
+                Select between News Stories or Documentaries using our intuitive slider to match your video style.
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
                 2
               </div>
-              <h3 className="text-xl font-semibold mb-3">AI Magic Happens</h3>
+              <h3 className="text-xl font-semibold mb-3">Search Your Topic</h3>
               <p className="text-gray-600">
-                Our advanced AI analyzes trends, audience preferences, and storytelling techniques to craft your script.
+                Enter your topic or choose from our trending suggestions. Our AI will research and gather factual information.
               </p>
             </div>
             <div className="text-center">
@@ -217,7 +290,7 @@ const Index = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">Get Your Script</h3>
               <p className="text-gray-600">
-                Receive a polished, engaging script ready for production. Edit, customize, and bring your vision to life.
+                Receive a research-based, engaging script ready for your YouTube video in just 3 minutes.
               </p>
             </div>
           </div>
