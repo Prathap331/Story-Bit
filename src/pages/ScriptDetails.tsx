@@ -1,29 +1,33 @@
-
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   FileText, 
-  Clock, 
   Heart, 
   Lightbulb, 
   BookOpen, 
   History, 
   Search, 
-  Scale,
+  Link,
+  ExternalLink,
+  Languages,
+  Monitor,
   Download,
-  Share,
-  PlayCircle
+  Eye,
+  ChevronDown
 } from 'lucide-react';
 
 const ScriptDetails = () => {
   const { id } = useParams();
+  const [scriptViewed, setScriptViewed] = useState(false);
+  const [showTranslateOptions, setShowTranslateOptions] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [searchLanguage, setSearchLanguage] = useState('');
 
   // Mock script data
   const scriptData = {
@@ -37,7 +41,15 @@ const ScriptDetails = () => {
       historicalExamples: 5,
       historicalFacts: 12,
       researchFacts: 18,
-      lawsIncluded: 4
+      lawsIncluded: 4,
+      keywords: [
+        'empathetic',
+        'compelling',
+        'factual',
+        'engaging',
+        'analytical',
+        'persuasive'
+      ]
     },
     structure: [
       { id: 'introduction', title: 'Hook & Introduction', duration: '0:00-1:30', words: 187 },
@@ -57,13 +69,69 @@ The script is structured to maintain audience attention through strategic pacing
 
 This script leverages multiple research sources, statistical data from reputable organizations, and case studies from various industries affected by climate change. The content is designed to be both informative and engaging, suitable for educational content creators, documentary filmmakers, and news channels focusing on climate and economic issues.
 
-The emotional depth is carefully calibrated to connect with viewers without overwhelming them, using storytelling techniques that make complex economic data relatable and actionable. The script includes specific examples from different geographic regions and economic sectors to provide a comprehensive global perspective on climate change's economic implications.`
+The emotional depth is carefully calibrated to connect with viewers without overwhelming them, using storytelling techniques that make complex economic data relatable and actionable. The script includes specific examples from different geographic regions and economic sectors to provide a comprehensive global perspective on climate change's economic implications.`,
+    sources: [
+      {
+        title: "IPCC Climate Change and Land Report 2019",
+        url: "https://www.ipcc.ch/srccl/",
+        description: "Comprehensive analysis of climate change impacts on land use and agriculture"
+      },
+      {
+        title: "World Bank Climate Change Action Plan",
+        url: "https://www.worldbank.org/en/topic/climatechange",
+        description: "Economic analysis of climate change adaptation and mitigation strategies"
+      },
+      {
+        title: "McKinsey Global Institute Climate Risk Report",
+        url: "https://www.mckinsey.com/business-functions/sustainability/our-insights",
+        description: "Business and economic implications of physical climate risks"
+      },
+      {
+        title: "Federal Reserve Climate Risk Assessment",
+        url: "https://www.federalreserve.gov/econres/climate-change.htm",
+        description: "Financial system stability and climate-related economic risks"
+      },
+      {
+        title: "Nature Climate Change Journal",
+        url: "https://www.nature.com/nclimate/",
+        description: "Peer-reviewed research on climate science and economic impacts"
+      },
+      {
+        title: "UNEP Global Environment Outlook",
+        url: "https://www.unep.org/global-environment-outlook",
+        description: "Environmental and economic trends analysis from UN Environment Programme"
+      }
+    ]
   };
 
-  const getEmotionalDepthLabel = (depth: number) => {
-    if (depth < 30) return "Logical Analysis";
-    if (depth < 70) return "Balanced Approach";
-    return "Connecting with Emotions";
+  const languages = [
+    'Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Russian', 
+    'Chinese', 'Japanese', 'Korean', 'Arabic', 'Hindi', 'Dutch'
+  ];
+
+  const filteredLanguages = languages.filter(lang => 
+    lang.toLowerCase().includes(searchLanguage.toLowerCase())
+  );
+
+  const handleViewFullScript = () => {
+    setScriptViewed(true);
+  };
+
+  const handleTranslate = () => {
+    setShowTranslateOptions(!showTranslateOptions);
+  };
+
+  const handleDownload = () => {
+    const content = `${scriptData.title}\n\n${scriptData.synopsis}`;
+    const blob = new Blob([content], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${scriptData.title}.doc`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -72,103 +140,93 @@ The emotional depth is carefully calibrated to connect with viewers without over
       
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-8 flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {scriptData.title}
-            </h1>
-            <p className="text-gray-600">
-              Generated script with comprehensive research and strategic structure
-            </p>
-          </div>
-          <div className="flex space-x-2">
-            <Button variant="outline" size="sm">
-              <Share className="w-4 h-4 mr-2" />
-              Share
-            </Button>
-            <Button size="sm" className="bg-gradient-to-r from-purple-600 to-blue-600">
-              <Download className="w-4 h-4 mr-2" />
-              Download
-            </Button>
-          </div>
-        </div>
-
-        {/* Metrics Section */}
         <div className="mb-8">
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle>Script Metrics</CardTitle>
-              <CardDescription>
-                Comprehensive analysis of your generated script
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-4 lg:grid-cols-8 gap-6">
-                <div className="text-center">
-                  <FileText className="w-8 h-8 mx-auto mb-2 text-purple-600" />
-                  <div className="text-2xl font-bold text-gray-900">
-                    {scriptData.metrics.totalWords}
-                  </div>
-                  <div className="text-sm text-gray-600">Total Words</div>
-                </div>
-                
-                <div className="text-center">
-                  <Heart className="w-8 h-8 mx-auto mb-2 text-red-500" />
-                  <div className="text-2xl font-bold text-gray-900">
-                    {scriptData.metrics.emotionalDepth}%
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {getEmotionalDepthLabel(scriptData.metrics.emotionalDepth)}
-                  </div>
-                </div>
-                
-                <div className="text-center">
-                  <Lightbulb className="w-8 h-8 mx-auto mb-2 text-yellow-500" />
-                  <div className="text-2xl font-bold text-gray-900">
-                    {scriptData.metrics.generalExamples}
-                  </div>
-                  <div className="text-sm text-gray-600">Examples</div>
-                </div>
-                
-                <div className="text-center">
-                  <BookOpen className="w-8 h-8 mx-auto mb-2 text-green-600" />
-                  <div className="text-2xl font-bold text-gray-900">
-                    {scriptData.metrics.proverbs}
-                  </div>
-                  <div className="text-sm text-gray-600">Proverbs</div>
-                </div>
-                
-                <div className="text-center">
-                  <History className="w-8 h-8 mx-auto mb-2 text-orange-600" />
-                  <div className="text-2xl font-bold text-gray-900">
-                    {scriptData.metrics.historicalFacts}
-                  </div>
-                  <div className="text-sm text-gray-600">Historical Facts</div>
-                </div>
-                
-                <div className="text-center">
-                  <Search className="w-8 h-8 mx-auto mb-2 text-indigo-600" />
-                  <div className="text-2xl font-bold text-gray-900">
-                    {scriptData.metrics.researchFacts}
-                  </div>
-                  <div className="text-sm text-gray-600">Research Facts</div>
-                </div>
-                
-                <div className="text-center">
-                  <Scale className="w-8 h-8 mx-auto mb-2 text-teal-600" />
-                  <div className="text-2xl font-bold text-gray-900">
-                    {scriptData.metrics.lawsIncluded}
-                  </div>
-                  <div className="text-sm text-gray-600">Laws Included</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {scriptData.title}
+          </h1>
+          <p className="text-gray-600">
+            Generated script with comprehensive research and strategic structure
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-8">
-          {/* Script Structure Flow Diagram - Narrower */}
-          <div className="lg:col-span-2">
+        {/* Script Metrics - Top Rectangular Box */}
+        <Card className="shadow-lg mb-8">
+          <CardHeader>
+            <CardTitle>Script Metrics</CardTitle>
+            <CardDescription>
+              Comprehensive analysis of your generated script
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-6 gap-4 mb-6">
+              <div className="text-center">
+                <FileText className="w-8 h-8 mx-auto mb-2 text-purple-600" />
+                <div className="text-2xl font-bold text-gray-900">
+                  {scriptData.metrics.totalWords}
+                </div>
+                <div className="text-sm text-gray-600">Total Words</div>
+              </div>
+              
+              <div className="text-center">
+                <Heart className="w-8 h-8 mx-auto mb-2 text-red-500" />
+                <div className="text-2xl font-bold text-gray-900">
+                  {scriptData.metrics.emotionalDepth}%
+                </div>
+                <div className="text-sm text-gray-600">Emotional Depth</div>
+              </div>
+              
+              <div className="text-center">
+                <Lightbulb className="w-8 h-8 mx-auto mb-2 text-yellow-500" />
+                <div className="text-2xl font-bold text-gray-900">
+                  {scriptData.metrics.generalExamples}
+                </div>
+                <div className="text-sm text-gray-600">Examples</div>
+              </div>
+              
+              <div className="text-center">
+                <BookOpen className="w-8 h-8 mx-auto mb-2 text-green-600" />
+                <div className="text-2xl font-bold text-gray-900">
+                  {scriptData.metrics.proverbs}
+                </div>
+                <div className="text-sm text-gray-600">Proverbs</div>
+              </div>
+              
+              <div className="text-center">
+                <History className="w-8 h-8 mx-auto mb-2 text-orange-600" />
+                <div className="text-2xl font-bold text-gray-900">
+                  {scriptData.metrics.historicalFacts}
+                </div>
+                <div className="text-sm text-gray-600">Historical Facts</div>
+              </div>
+              
+              <div className="text-center">
+                <Search className="w-8 h-8 mx-auto mb-2 text-indigo-600" />
+                <div className="text-2xl font-bold text-gray-900">
+                  {scriptData.metrics.researchFacts}
+                </div>
+                <div className="text-sm text-gray-600">Research Facts</div>
+              </div>
+            </div>
+
+            {/* Keywords Section */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-3">Keywords</h4>
+              <div className="flex flex-wrap gap-2">
+                {scriptData.metrics.keywords.map((keyword, index) => (
+                  <Badge key={index} variant="secondary" className="bg-blue-100 text-blue-800 px-4 py-2">
+                    {keyword}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Main Content - Two Column Layout */}
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Left Column - Script Structure & Sources */}
+          <div className="space-y-6">
+            {/* Script Structure */}
             <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle className="text-lg">Script Structure Flow</CardTitle>
@@ -199,27 +257,58 @@ The emotional depth is carefully calibrated to connect with viewers without over
                 </div>
               </CardContent>
             </Card>
-          </div>
 
-          {/* Synopsis Section - Wider with larger text */}
-          <div className="lg:col-span-3">
+            {/* Sources Section */}
             <Card className="shadow-lg">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-lg">Script Synopsis</CardTitle>
-                    <CardDescription>
-                      Comprehensive overview of your script content and approach
-                    </CardDescription>
-                  </div>
-                  <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-                    <PlayCircle className="w-4 h-4 mr-2" />
-                    Generate Script
-                  </Button>
-                </div>
+                <CardTitle className="flex items-center text-lg">
+                  <Link className="w-5 h-5 mr-2" />
+                  Research Sources
+                </CardTitle>
+                <CardDescription>
+                  Credible sources and references used in this script
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <ScrollArea className="h-96">
+                <div className="space-y-4">
+                  {scriptData.sources.map((source, index) => (
+                    <div key={index} className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                      <ExternalLink className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-900 mb-1">
+                          {source.title}
+                        </h4>
+                        <p className="text-sm text-gray-600 mb-2">
+                          {source.description}
+                        </p>
+                        <a 
+                          href={source.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:text-blue-800 underline"
+                        >
+                          {source.url}
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Column - Synopsis & Action Buttons */}
+          <div className="space-y-6">
+            {/* Synopsis */}
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-lg">Script Synopsis</CardTitle>
+                <CardDescription>
+                  Comprehensive overview of your script content and approach
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[400px]">
                   <div className="prose prose-sm max-w-none">
                     <div className="text-gray-700 leading-relaxed whitespace-pre-line text-base">
                       {scriptData.synopsis}
@@ -228,6 +317,87 @@ The emotional depth is carefully calibrated to connect with viewers without over
                 </ScrollArea>
               </CardContent>
             </Card>
+
+            {/* Action Buttons */}
+            <div className="space-y-4">
+              {/* View Full Script Button */}
+              <Button 
+                size="lg" 
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700"
+                onClick={handleViewFullScript}
+              >
+                <Eye className="w-5 h-5 mr-2" />
+                View Full Script
+                <Download className="w-4 h-4 ml-2" />
+              </Button>
+
+              {/* Translate Button */}
+              <div className="relative">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleTranslate}
+                  disabled={!scriptViewed}
+                >
+                  <Languages className="w-5 h-5 mr-2" />
+                  Translate
+                  <Search className="w-4 h-4 ml-2" />
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </Button>
+
+                {showTranslateOptions && scriptViewed && (
+                  <Card className="absolute top-full mt-2 w-full z-50 shadow-lg">
+                    <CardHeader>
+                      <CardTitle className="text-lg">Select Language</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="flex space-x-2">
+                          <Input
+                            placeholder="Search languages..."
+                            value={searchLanguage}
+                            onChange={(e) => setSearchLanguage(e.target.value)}
+                            className="flex-1"
+                          />
+                          <Button size="sm">
+                            <Search className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <div className="max-h-40 overflow-y-auto space-y-1">
+                          {filteredLanguages.map((language) => (
+                            <Button
+                              key={language}
+                              variant="outline"
+                              className="w-full justify-start"
+                              onClick={() => {
+                                setSelectedLanguage(language);
+                                setShowTranslateOptions(false);
+                              }}
+                            >
+                              {language}
+                              <Download className="w-4 h-4 ml-auto" />
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+
+              {/* Teleprompter Button */}
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full"
+                disabled={!scriptViewed}
+              >
+                <Monitor className="w-5 h-5 mr-2" />
+                Teleprompter
+                <ChevronDown className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>

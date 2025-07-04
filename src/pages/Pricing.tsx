@@ -73,30 +73,6 @@ const Pricing = () => {
     }
   ];
 
-  const keyFeatures = [
-    {
-      title: 'Total Video Length',
-      description: 'Amount of script content you can generate',
-      free: '100 minutes (one-time)',
-      basic: '500 minutes/month',
-      pro: 'Unlimited'
-    },
-    {
-      title: 'Depth of Analysis',
-      description: 'Quality and depth of research and content analysis',
-      free: 'Basic',
-      basic: 'Enhanced',
-      pro: 'Premium'
-    },
-    {
-      title: 'Latency',
-      description: 'Speed of script generation',
-      free: '30-60 seconds',
-      basic: '15-30 seconds',
-      pro: '5-15 seconds'
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       <Header />
@@ -113,47 +89,6 @@ const Pricing = () => {
           <p className="text-xl text-gray-600 leading-relaxed">
             Select the plan that best fits your content creation needs. Upgrade or downgrade anytime.
           </p>
-        </div>
-
-        {/* Key Features Comparison */}
-        <div className="max-w-6xl mx-auto mb-16">
-          <Card className="shadow-xl border-0 bg-white/70 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-center text-2xl">Key Features Comparison</CardTitle>
-              <CardDescription className="text-center">
-                Understanding the differences between our plans
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-4 px-2 font-semibold">Feature</th>
-                      <th className="text-center py-4 px-2 font-semibold">Free</th>
-                      <th className="text-center py-4 px-2 font-semibold">Basic</th>
-                      <th className="text-center py-4 px-2 font-semibold">Pro</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {keyFeatures.map((feature, index) => (
-                      <tr key={index} className="border-b">
-                        <td className="py-4 px-2">
-                          <div>
-                            <div className="font-medium">{feature.title}</div>
-                            <div className="text-sm text-gray-600">{feature.description}</div>
-                          </div>
-                        </td>
-                        <td className="text-center py-4 px-2">{feature.free}</td>
-                        <td className="text-center py-4 px-2 font-semibold text-purple-600">{feature.basic}</td>
-                        <td className="text-center py-4 px-2 font-semibold text-blue-600">{feature.pro}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Pricing Cards */}
