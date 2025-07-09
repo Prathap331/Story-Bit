@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -132,7 +131,6 @@ The emotional depth is carefully calibrated to connect with viewers without over
   };
 
   const handleTeleprompter = () => {
-    // Open teleprompter directly without dropdown
     console.log('Opening teleprompter...');
   };
 
@@ -259,9 +257,9 @@ The emotional depth is carefully calibrated to connect with viewers without over
           </CardContent>
         </Card>
 
-        {/* Main Content - Adjusted Grid Layout */}
-        <div className="grid lg:grid-cols-5 gap-8">
-          {/* Left Column - Script Structure & Sources (1.5/5 width) */}
+        {/* Main Content - Adjusted Grid Layout to 25% : 75% */}
+        <div className="grid lg:grid-cols-4 gap-8">
+          {/* Left Column - Script Structure & Sources (25% width - 1/4) */}
           <div className="lg:col-span-1 space-y-6">
             {/* Script Structure */}
             <Card className="shadow-lg">
@@ -272,26 +270,28 @@ The emotional depth is carefully calibrated to connect with viewers without over
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {scriptData.structure.map((section, index) => (
-                    <div key={section.id} className="flex items-center">
-                      <div className="flex flex-col items-center mr-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs">
-                          {index + 1}
+                <ScrollArea className="h-[400px]">
+                  <div className="space-y-3 pr-4">
+                    {scriptData.structure.map((section, index) => (
+                      <div key={section.id} className="flex items-center">
+                        <div className="flex flex-col items-center mr-3">
+                          <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                            {index + 1}
+                          </div>
+                          {index < scriptData.structure.length - 1 && (
+                            <div className="w-0.5 h-6 bg-gradient-to-b from-purple-600 to-blue-600 mt-1"></div>
+                          )}
                         </div>
-                        {index < scriptData.structure.length - 1 && (
-                          <div className="w-0.5 h-6 bg-gradient-to-b from-purple-600 to-blue-600 mt-1"></div>
-                        )}
-                      </div>
-                      <div className="flex-1 bg-white/50 rounded-lg p-3 border border-gray-200">
-                        <h3 className="font-semibold text-gray-900 mb-1 text-sm">{section.title}</h3>
-                        <div className="text-xs text-gray-600">
-                          {section.duration} • {section.words} words
+                        <div className="flex-1 bg-white/50 rounded-lg p-3 border border-gray-200">
+                          <h3 className="font-semibold text-gray-900 mb-1 text-sm">{section.title}</h3>
+                          <div className="text-xs text-gray-600">
+                            {section.duration} • {section.words} words
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                </ScrollArea>
               </CardContent>
             </Card>
 
@@ -307,37 +307,39 @@ The emotional depth is carefully calibrated to connect with viewers without over
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {scriptData.sources.map((source, index) => (
-                    <div key={index} className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                      <ExternalLink className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                      <div className="flex-1">
-                        <h4 className="font-medium text-gray-900 mb-1">
-                          {source.title}
-                        </h4>
-                        <p className="text-sm text-gray-600 mb-2">
-                          {source.description}
-                        </p>
-                        <a 
-                          href={source.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:text-blue-800 underline"
-                        >
-                          {source.url}
-                        </a>
+                <ScrollArea className="h-[400px]">
+                  <div className="space-y-4 pr-4">
+                    {scriptData.sources.map((source, index) => (
+                      <div key={index} className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <ExternalLink className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 mb-1">
+                            {source.title}
+                          </h4>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {source.description}
+                          </p>
+                          <a 
+                            href={source.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-600 hover:text-blue-800 underline"
+                          >
+                            {source.url}
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                </ScrollArea>
               </CardContent>
             </Card>
           </div>
 
-          {/* Right Column - Synopsis (3.5/5 width) */}
-          <div className="lg:col-span-4">
+          {/* Right Column - Synopsis (75% width - 3/4) */}
+          <div className="lg:col-span-3">
             {/* Synopsis with Action Buttons in Header */}
-            <Card className="shadow-lg h-full">
+            <Card className="shadow-lg">
               <CardHeader className="pb-4">
                 <div className="flex flex-col space-y-4">
                   <div>
