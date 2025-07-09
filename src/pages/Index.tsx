@@ -1,7 +1,8 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import ComingFeatures from '../components/ComingFeatures';
+import Footer from '../components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -201,6 +202,12 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Coming Features Section */}
+      <ComingFeatures />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,6 @@
-
 import Header from '../components/Header';
+import ComingFeatures from '../components/ComingFeatures';
+import Footer from '../components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -151,6 +152,12 @@ const Pricing = () => {
           </Button>
         </div>
       </div>
+
+      {/* Coming Features Section */}
+      <ComingFeatures />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
