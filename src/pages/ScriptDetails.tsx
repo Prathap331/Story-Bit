@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
@@ -26,6 +27,7 @@ const ScriptDetails = () => {
   const { id } = useParams();
   const [scriptViewed, setScriptViewed] = useState(false);
   const [showTranslateOptions, setShowTranslateOptions] = useState(false);
+  const [showTeleprompterOptions, setShowTeleprompterOptions] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [searchLanguage, setSearchLanguage] = useState('');
 
@@ -119,6 +121,10 @@ The emotional depth is carefully calibrated to connect with viewers without over
 
   const handleTranslate = () => {
     setShowTranslateOptions(!showTranslateOptions);
+  };
+
+  const handleTeleprompter = () => {
+    setShowTeleprompterOptions(!showTeleprompterOptions);
   };
 
   const handleDownload = () => {
@@ -222,10 +228,10 @@ The emotional depth is carefully calibrated to connect with viewers without over
           </CardContent>
         </Card>
 
-        {/* Main Content - Two Column Layout */}
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Left Column - Script Structure & Sources */}
-          <div className="space-y-6">
+        {/* Main Content - Adjusted Grid Layout */}
+        <div className="grid lg:grid-cols-5 gap-8">
+          {/* Left Column - Script Structure & Sources (2/5 width) */}
+          <div className="lg:col-span-2 space-y-6">
             {/* Script Structure */}
             <Card className="shadow-lg">
               <CardHeader>
@@ -297,18 +303,136 @@ The emotional depth is carefully calibrated to connect with viewers without over
             </Card>
           </div>
 
-          {/* Right Column - Synopsis & Action Buttons */}
-          <div className="space-y-6">
-            {/* Synopsis */}
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-lg">Script Synopsis</CardTitle>
-                <CardDescription>
-                  Comprehensive overview of your script content and approach
-                </CardDescription>
+          {/* Right Column - Synopsis (3/5 width) */}
+          <div className="lg:col-span-3">
+            {/* Synopsis with Action Buttons in Header */}
+            <Card className="shadow-lg h-full">
+              <CardHeader className="pb-4">
+                <div className="flex flex-col space-y-4">
+                  <div>
+                    <CardTitle className="text-lg">Script Synopsis</CardTitle>
+                    <CardDescription>
+                      Comprehensive overview of your script content and approach
+                    </CardDescription>
+                  </div>
+                  
+                  {/* Action Buttons in Header */}
+                  <div className="flex space-x-3">
+                    <Button 
+                      size="sm" 
+                      className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700"
+                      onClick={handleViewFullScript}
+                    >
+                      <Eye className="w-4 h-4 mr-1" />
+                      View Full Script
+                    </Button>
+
+                    <div className="relative flex-1">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                        onClick={handleTranslate}
+                        disabled={!scriptViewed}
+                      >
+                        <Languages className="w-4 h-4 mr-1" />
+                        Translate
+                        <ChevronDown className="w-3 h-3 ml-1" />
+                      </Button>
+
+                      {showTranslateOptions && scriptViewed && (
+                        <Card className="absolute top-full mt-2 w-full z-50 shadow-lg">
+                          <CardHeader>
+                            <CardTitle className="text-sm">Select Language</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-3">
+                              <Input
+                                placeholder="Search languages..."
+                                value={searchLanguage}
+                                onChange={(e) => setSearchLanguage(e.target.value)}
+                                className="text-sm"
+                              />
+                              <div className="max-h-40 overflow-y-auto space-y-1">
+                                {filteredLanguages.map((language) => (
+                                  <Button
+                                    key={language}
+                                    variant="outline"
+                                    size="sm"
+                                    className="w-full justify-start"
+                                    onClick={() => {
+                                      setSelectedLanguage(language);
+                                      setShowTranslateOptions(false);
+                                    }}
+                                  >
+                                    {language}
+                                  </Button>
+                                ))}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+                    </div>
+
+                    <div className="relative flex-1">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                        onClick={handleTeleprompter}
+                        disabled={!scriptViewed}
+                      >
+                        <Monitor className="w-4 h-4 mr-1" />
+                        Teleprompter
+                        <ChevronDown className="w-3 h-3 ml-1" />
+                      </Button>
+
+                      {showTeleprompterOptions && scriptViewed && (
+                        <Card className="absolute top-full mt-2 w-full z-50 shadow-lg">
+                          <CardHeader>
+                            <CardTitle className="text-sm">Teleprompter Options</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full justify-start"
+                              >
+                                <Monitor className="w-4 h-4 mr-2" />
+                                Open Teleprompter
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full justify-start"
+                                onClick={handleDownload}
+                              >
+                                <Download className="w-4 h-4 mr-2" />
+                                Download Script
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+                    </div>
+
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1"
+                      onClick={handleDownload}
+                      disabled={!scriptViewed}
+                    >
+                      <Download className="w-4 h-4 mr-1" />
+                      Download
+                    </Button>
+                  </div>
+                </div>
               </CardHeader>
-              <CardContent>
-                <ScrollArea className="h-[400px]">
+              <CardContent className="pt-0 flex-1">
+                <ScrollArea className="h-[600px]">
                   <div className="prose prose-sm max-w-none">
                     <div className="text-gray-700 leading-relaxed whitespace-pre-line text-base">
                       {scriptData.synopsis}
@@ -317,87 +441,6 @@ The emotional depth is carefully calibrated to connect with viewers without over
                 </ScrollArea>
               </CardContent>
             </Card>
-
-            {/* Action Buttons */}
-            <div className="space-y-4">
-              {/* View Full Script Button */}
-              <Button 
-                size="lg" 
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700"
-                onClick={handleViewFullScript}
-              >
-                <Eye className="w-5 h-5 mr-2" />
-                View Full Script
-                <Download className="w-4 h-4 ml-2" />
-              </Button>
-
-              {/* Translate Button */}
-              <div className="relative">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full"
-                  onClick={handleTranslate}
-                  disabled={!scriptViewed}
-                >
-                  <Languages className="w-5 h-5 mr-2" />
-                  Translate
-                  <Search className="w-4 h-4 ml-2" />
-                  <ChevronDown className="w-4 h-4 ml-1" />
-                </Button>
-
-                {showTranslateOptions && scriptViewed && (
-                  <Card className="absolute top-full mt-2 w-full z-50 shadow-lg">
-                    <CardHeader>
-                      <CardTitle className="text-lg">Select Language</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div className="flex space-x-2">
-                          <Input
-                            placeholder="Search languages..."
-                            value={searchLanguage}
-                            onChange={(e) => setSearchLanguage(e.target.value)}
-                            className="flex-1"
-                          />
-                          <Button size="sm">
-                            <Search className="w-4 h-4" />
-                          </Button>
-                        </div>
-                        <div className="max-h-40 overflow-y-auto space-y-1">
-                          {filteredLanguages.map((language) => (
-                            <Button
-                              key={language}
-                              variant="outline"
-                              className="w-full justify-start"
-                              onClick={() => {
-                                setSelectedLanguage(language);
-                                setShowTranslateOptions(false);
-                              }}
-                            >
-                              {language}
-                              <Download className="w-4 h-4 ml-auto" />
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-
-              {/* Teleprompter Button */}
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full"
-                disabled={!scriptViewed}
-              >
-                <Monitor className="w-5 h-5 mr-2" />
-                Teleprompter
-                <ChevronDown className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
           </div>
         </div>
       </div>
