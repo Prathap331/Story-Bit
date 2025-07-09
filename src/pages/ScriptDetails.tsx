@@ -26,7 +26,8 @@ import {
   Monitor,
   Download,
   Eye,
-  ChevronDown
+  ChevronDown,
+  Loader2
 } from 'lucide-react';
 
 const ScriptDetails = () => {
@@ -37,6 +38,11 @@ const ScriptDetails = () => {
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [searchLanguage, setSearchLanguage] = useState('');
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [isGeneratingTeleprompter, setIsGeneratingTeleprompter] = useState(false);
+  const [nativeLanguageScript, setNativeLanguageScript] = useState('');
+  const [teleprompterScript, setTeleprompterScript] = useState('');
+  const [currentView, setCurrentView] = useState<'original' | 'native' | 'teleprompter'>('original');
 
   // Mock script data
   const scriptData = {
@@ -130,8 +136,60 @@ The emotional depth is carefully calibrated to connect with viewers without over
     setShowTranslateOptions(!showTranslateOptions);
   };
 
-  const handleTeleprompter = () => {
-    console.log('Opening teleprompter...');
+  const handleLanguageSelect = async (language: string) => {
+    setSelectedLanguage(language);
+    setShowTranslateOptions(false);
+    setIsTranslating(true);
+    
+    // Simulate API call for translation
+    setTimeout(() => {
+      const translatedScript = `[${language} Translation]\n\n${scriptData.synopsis}\n\n[This is a simulated translation to ${language}. In a real implementation, this would be the actual translated content from your translation service.]`;
+      setNativeLanguageScript(translatedScript);
+      setCurrentView('native');
+      setIsTranslating(false);
+    }, 2000);
+  };
+
+  const handleTeleprompter = async () => {
+    if (currentView === 'original') {
+      // If viewing original, first convert to native language (English as default)
+      setIsTranslating(true);
+      setTimeout(() => {
+        const defaultNativeScript = scriptData.synopsis;
+        setNativeLanguageScript(defaultNativeScript);
+        setCurrentView('native');
+        setIsTranslating(false);
+        
+        // Then convert to teleprompter
+        generateTeleprompterScript(defaultNativeScript);
+      }, 1000);
+    } else {
+      // If already in native language, convert to teleprompter
+      generateTeleprompterScript(nativeLanguageScript);
+    }
+  };
+
+  const generateTeleprompterScript = (sourceScript: string) => {
+    setIsGeneratingTeleprompter(true);
+    
+    // Simulate API call for teleprompter conversion
+    setTimeout(() => {
+      const teleScript = sourceScript
+        .split('\n\n')
+        .map(paragraph => {
+          if (paragraph.trim()) {
+            return `${paragraph}\n\n[PAUSE - 2 seconds]\n`;
+          }
+          return paragraph;
+        })
+        .join('\n')
+        .replace(/\./g, '.\n[BREATH]\n')
+        .replace(/[?!]/g, match => `${match}\n[PAUSE - 1 second]\n`);
+      
+      setTeleprompterScript(`[TELEPROMPTER VERSION]\n\n${teleScript}\n\n[END OF SCRIPT]`);
+      setCurrentView('teleprompter');
+      setIsGeneratingTeleprompter(false);
+    }, 1500);
   };
 
   const handleDownload = () => {
@@ -145,14 +203,14 @@ The emotional depth is carefully calibrated to connect with viewers without over
     switch (type) {
       case 'script':
         content = `${scriptData.title}\n\n${scriptData.synopsis}`;
-        filename = `${scriptData.title}-Script.doc`;
+        filename = `${scriptData.title}-Original-Script.doc`;
         break;
       case 'native':
-        content = `${scriptData.title}\n\nNative Language Version\n\n${scriptData.synopsis}`;
-        filename = `${scriptData.title}-Native.doc`;
+        content = nativeLanguageScript || `${scriptData.title}\n\n${scriptData.synopsis}`;
+        filename = `${scriptData.title}-Native-Language.doc`;
         break;
       case 'teleprompter':
-        content = `${scriptData.title}\n\nTeleprompter Version\n\n${scriptData.synopsis.replace(/\n\n/g, '\n\n[PAUSE]\n\n')}`;
+        content = teleprompterScript || `${scriptData.title}\n\nTeleprompter Version\n\n${scriptData.synopsis.replace(/\n\n/g, '\n\n[PAUSE]\n\n')}`;
         filename = `${scriptData.title}-Teleprompter.doc`;
         break;
     }
@@ -167,6 +225,28 @@ The emotional depth is carefully calibrated to connect with viewers without over
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     setShowDownloadModal(false);
+  };
+
+  const getCurrentScript = () => {
+    switch (currentView) {
+      case 'native':
+        return nativeLanguageScript;
+      case 'teleprompter':
+        return teleprompterScript;
+      default:
+        return scriptData.synopsis;
+    }
+  };
+
+  const getViewTitle = () => {
+    switch (currentView) {
+      case 'native':
+        return `Script Synopsis - Native Language${selectedLanguage ? ` (${selectedLanguage})` : ''}`;
+      case 'teleprompter':
+        return 'Script Synopsis - Teleprompter Version';
+      default:
+        return 'Script Synopsis';
+    }
   };
 
   return (
@@ -257,9 +337,9 @@ The emotional depth is carefully calibrated to connect with viewers without over
           </CardContent>
         </Card>
 
-        {/* Main Content - Adjusted Grid Layout to 25% : 75% */}
+        {/* Main Content - 25% : 75% Grid Layout */}
         <div className="grid lg:grid-cols-4 gap-8">
-          {/* Left Column - Script Structure & Sources (25% width - 1/4) */}
+          {/* Left Column - Script Structure & Sources (25% width) */}
           <div className="lg:col-span-1 space-y-6">
             {/* Script Structure */}
             <Card className="shadow-lg">
@@ -336,16 +416,21 @@ The emotional depth is carefully calibrated to connect with viewers without over
             </Card>
           </div>
 
-          {/* Right Column - Synopsis (75% width - 3/4) */}
+          {/* Right Column - Synopsis (75% width) */}
           <div className="lg:col-span-3">
             {/* Synopsis with Action Buttons in Header */}
             <Card className="shadow-lg">
               <CardHeader className="pb-4">
                 <div className="flex flex-col space-y-4">
                   <div>
-                    <CardTitle className="text-lg">Script Synopsis</CardTitle>
+                    <CardTitle className="text-lg">{getViewTitle()}</CardTitle>
                     <CardDescription>
-                      Comprehensive overview of your script content and approach
+                      {currentView === 'teleprompter' 
+                        ? 'Teleprompter-optimized version with timing cues and pauses'
+                        : currentView === 'native'
+                        ? 'Converted to native language version'
+                        : 'Comprehensive overview of your script content and approach'
+                      }
                     </CardDescription>
                   </div>
                   
@@ -366,11 +451,20 @@ The emotional depth is carefully calibrated to connect with viewers without over
                         variant="outline"
                         className="w-full"
                         onClick={handleTranslate}
-                        disabled={!scriptViewed}
+                        disabled={!scriptViewed || isTranslating}
                       >
-                        <Languages className="w-4 h-4 mr-1" />
-                        Translate
-                        <ChevronDown className="w-3 h-3 ml-1" />
+                        {isTranslating ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                            Translating...
+                          </>
+                        ) : (
+                          <>
+                            <Languages className="w-4 h-4 mr-1" />
+                            Native Language
+                            <ChevronDown className="w-3 h-3 ml-1" />
+                          </>
+                        )}
                       </Button>
 
                       {showTranslateOptions && scriptViewed && (
@@ -393,10 +487,7 @@ The emotional depth is carefully calibrated to connect with viewers without over
                                     variant="outline"
                                     size="sm"
                                     className="w-full justify-start"
-                                    onClick={() => {
-                                      setSelectedLanguage(language);
-                                      setShowTranslateOptions(false);
-                                    }}
+                                    onClick={() => handleLanguageSelect(language)}
                                   >
                                     {language}
                                   </Button>
@@ -413,10 +504,19 @@ The emotional depth is carefully calibrated to connect with viewers without over
                       variant="outline"
                       className="flex-1"
                       onClick={handleTeleprompter}
-                      disabled={!scriptViewed}
+                      disabled={!scriptViewed || isGeneratingTeleprompter}
                     >
-                      <Monitor className="w-4 h-4 mr-1" />
-                      Teleprompter
+                      {isGeneratingTeleprompter ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                          Converting...
+                        </>
+                      ) : (
+                        <>
+                          <Monitor className="w-4 h-4 mr-1" />
+                          Teleprompter
+                        </>
+                      )}
                     </Button>
 
                     <Button
@@ -436,7 +536,7 @@ The emotional depth is carefully calibrated to connect with viewers without over
                 <ScrollArea className="h-[800px]">
                   <div className="prose prose-sm max-w-none">
                     <div className="text-gray-700 leading-relaxed whitespace-pre-line text-base">
-                      {scriptData.synopsis}
+                      {getCurrentScript()}
                     </div>
                   </div>
                 </ScrollArea>
@@ -462,20 +562,22 @@ The emotional depth is carefully calibrated to connect with viewers without over
               variant="outline"
             >
               <FileText className="w-4 h-4 mr-2" />
-              Script
+              Original Script
             </Button>
             <Button
               onClick={() => downloadScript('native')}
               className="w-full justify-start"
               variant="outline"
+              disabled={!nativeLanguageScript && currentView === 'original'}
             >
               <Languages className="w-4 h-4 mr-2" />
-              Native Language
+              Native Language Version
             </Button>
             <Button
               onClick={() => downloadScript('teleprompter')}
               className="w-full justify-start"
               variant="outline"
+              disabled={!teleprompterScript && currentView !== 'teleprompter'}
             >
               <Monitor className="w-4 h-4 mr-2" />
               Teleprompter Version
