@@ -1,12 +1,19 @@
 
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { 
   FileText, 
   Heart, 
@@ -25,9 +32,10 @@ import {
 
 const ScriptDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [scriptViewed, setScriptViewed] = useState(false);
   const [showTranslateOptions, setShowTranslateOptions] = useState(false);
-  const [showTeleprompterOptions, setShowTeleprompterOptions] = useState(false);
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [searchLanguage, setSearchLanguage] = useState('');
 
@@ -37,7 +45,7 @@ const ScriptDetails = () => {
     metrics: {
       totalWords: 1247,
       videoLength: 12.5,
-      emotionalDepth: 75, // 0-100 scale
+      emotionalDepth: 75,
       generalExamples: 8,
       proverbs: 3,
       historicalExamples: 5,
@@ -124,20 +132,43 @@ The emotional depth is carefully calibrated to connect with viewers without over
   };
 
   const handleTeleprompter = () => {
-    setShowTeleprompterOptions(!showTeleprompterOptions);
+    // Open teleprompter directly without dropdown
+    console.log('Opening teleprompter...');
   };
 
   const handleDownload = () => {
-    const content = `${scriptData.title}\n\n${scriptData.synopsis}`;
+    setShowDownloadModal(true);
+  };
+
+  const downloadScript = (type: 'script' | 'native' | 'teleprompter') => {
+    let content = '';
+    let filename = '';
+    
+    switch (type) {
+      case 'script':
+        content = `${scriptData.title}\n\n${scriptData.synopsis}`;
+        filename = `${scriptData.title}-Script.doc`;
+        break;
+      case 'native':
+        content = `${scriptData.title}\n\nNative Language Version\n\n${scriptData.synopsis}`;
+        filename = `${scriptData.title}-Native.doc`;
+        break;
+      case 'teleprompter':
+        content = `${scriptData.title}\n\nTeleprompter Version\n\n${scriptData.synopsis.replace(/\n\n/g, '\n\n[PAUSE]\n\n')}`;
+        filename = `${scriptData.title}-Teleprompter.doc`;
+        break;
+    }
+    
     const blob = new Blob([content], { type: 'application/msword' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${scriptData.title}.doc`;
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    setShowDownloadModal(false);
   };
 
   return (
@@ -230,8 +261,8 @@ The emotional depth is carefully calibrated to connect with viewers without over
 
         {/* Main Content - Adjusted Grid Layout */}
         <div className="grid lg:grid-cols-5 gap-8">
-          {/* Left Column - Script Structure & Sources (2/5 width) */}
-          <div className="lg:col-span-2 space-y-6">
+          {/* Left Column - Script Structure & Sources (1.5/5 width) */}
+          <div className="lg:col-span-1 space-y-6">
             {/* Script Structure */}
             <Card className="shadow-lg">
               <CardHeader>
@@ -303,8 +334,8 @@ The emotional depth is carefully calibrated to connect with viewers without over
             </Card>
           </div>
 
-          {/* Right Column - Synopsis (3/5 width) */}
-          <div className="lg:col-span-3">
+          {/* Right Column - Synopsis (3.5/5 width) */}
+          <div className="lg:col-span-4">
             {/* Synopsis with Action Buttons in Header */}
             <Card className="shadow-lg h-full">
               <CardHeader className="pb-4">
@@ -341,7 +372,7 @@ The emotional depth is carefully calibrated to connect with viewers without over
                       </Button>
 
                       {showTranslateOptions && scriptViewed && (
-                        <Card className="absolute top-full mt-2 w-full z-50 shadow-lg">
+                        <Card className="absolute top-full mt-2 w-full z-50 shadow-lg bg-white">
                           <CardHeader>
                             <CardTitle className="text-sm">Select Language</CardTitle>
                           </CardHeader>
@@ -375,48 +406,16 @@ The emotional depth is carefully calibrated to connect with viewers without over
                       )}
                     </div>
 
-                    <div className="relative flex-1">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="w-full"
-                        onClick={handleTeleprompter}
-                        disabled={!scriptViewed}
-                      >
-                        <Monitor className="w-4 h-4 mr-1" />
-                        Teleprompter
-                        <ChevronDown className="w-3 h-3 ml-1" />
-                      </Button>
-
-                      {showTeleprompterOptions && scriptViewed && (
-                        <Card className="absolute top-full mt-2 w-full z-50 shadow-lg">
-                          <CardHeader>
-                            <CardTitle className="text-sm">Teleprompter Options</CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <div className="space-y-2">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="w-full justify-start"
-                              >
-                                <Monitor className="w-4 h-4 mr-2" />
-                                Open Teleprompter
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="w-full justify-start"
-                                onClick={handleDownload}
-                              >
-                                <Download className="w-4 h-4 mr-2" />
-                                Download Script
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      )}
-                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1"
+                      onClick={handleTeleprompter}
+                      disabled={!scriptViewed}
+                    >
+                      <Monitor className="w-4 h-4 mr-1" />
+                      Teleprompter
+                    </Button>
 
                     <Button
                       size="sm"
@@ -432,7 +431,7 @@ The emotional depth is carefully calibrated to connect with viewers without over
                 </div>
               </CardHeader>
               <CardContent className="pt-0 flex-1">
-                <ScrollArea className="h-[600px]">
+                <ScrollArea className="h-[800px]">
                   <div className="prose prose-sm max-w-none">
                     <div className="text-gray-700 leading-relaxed whitespace-pre-line text-base">
                       {scriptData.synopsis}
@@ -444,6 +443,44 @@ The emotional depth is carefully calibrated to connect with viewers without over
           </div>
         </div>
       </div>
+
+      {/* Download Modal */}
+      <Dialog open={showDownloadModal} onOpenChange={setShowDownloadModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Download Options</DialogTitle>
+            <DialogDescription>
+              Choose the format you'd like to download
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <Button
+              onClick={() => downloadScript('script')}
+              className="w-full justify-start"
+              variant="outline"
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              Script
+            </Button>
+            <Button
+              onClick={() => downloadScript('native')}
+              className="w-full justify-start"
+              variant="outline"
+            >
+              <Languages className="w-4 h-4 mr-2" />
+              Native Language
+            </Button>
+            <Button
+              onClick={() => downloadScript('teleprompter')}
+              className="w-full justify-start"
+              variant="outline"
+            >
+              <Monitor className="w-4 h-4 mr-2" />
+              Teleprompter Version
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
