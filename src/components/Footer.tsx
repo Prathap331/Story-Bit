@@ -1,5 +1,6 @@
 
 import { Mail, Phone, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -8,12 +9,18 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Details */}
           <div>
-            <h3 className="text-xl font-bold mb-4">ScriptAI</h3>
+            <Link to="/" className="inline-block hover:opacity-90 transition-opacity">
+              <img
+                src="/White logo.png"
+                alt="Storybit"
+                className="mb-4 h-8 w-auto"
+              />
+            </Link>
             <p className="text-gray-300 mb-4">
               Revolutionary AI-powered scriptwriting platform for content creators worldwide.
             </p>
             <div className="text-gray-400 text-sm">
-              <p>© 2024 ScriptAI. All rights reserved.</p>
+              <p>© 2025 Morpho Technologies Pvt Ltd. All rights reserved.</p>
             </div>
           </div>
 
@@ -21,10 +28,10 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Address</h4>
             <div className="text-gray-300 space-y-2">
-              <p>123 Innovation Street</p>
-              <p>Tech District, Suite 456</p>
-              <p>San Francisco, CA 94105</p>
-              <p>United States</p>
+              <p>Plot no. MIG 891,</p>
+              <p>KPHB Phase 3, Kukatpally,</p>
+              <p>Hyderabad, Telangana,</p>
+              <p>India - 500072</p>
             </div>
           </div>
 
@@ -32,18 +39,18 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <div className="space-y-3">
-              <div className="flex items-center space-x-2 text-gray-300">
+              <a href="mailto:support@storybit.tech" className="flex items-center space-x-2 text-gray-300 hover:text-white">
                 <Mail className="w-4 h-4" />
-                <span>contact@scriptai.com</span>
-              </div>
-              <div className="flex items-center space-x-2 text-gray-300">
+                <span>support@storybit.tech</span>
+              </a>
+              <a href="tel:+919000449855" className="flex items-center space-x-2 text-gray-300 hover:text-white">
                 <Phone className="w-4 h-4" />
-                <span>+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center space-x-2 text-gray-300">
+                <span>+91 90004 49855</span>
+              </a>
+              {/* <div className="flex items-center space-x-2 text-gray-300">
                 <MessageCircle className="w-4 h-4" />
                 <span>+1 (555) 987-6543</span>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -51,10 +58,10 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <div className="space-y-2">
-              <p className="text-gray-300 hover:text-white cursor-pointer">Privacy Policy</p>
-              <p className="text-gray-300 hover:text-white cursor-pointer">Terms of Service</p>
-              <p className="text-gray-300 hover:text-white cursor-pointer">Support</p>
-              <p className="text-gray-300 hover:text-white cursor-pointer">Documentation</p>
+              <Link to="/privacy" className="block text-gray-300 hover:text-white">Privacy Policy</Link>
+              <Link to="/terms" className="block text-gray-300 hover:text-white">Terms of Service</Link>
+              <Link to="/support" className="block text-gray-300 hover:text-white">Support</Link>
+              <a href="https://docs.storybit.tech" target="_blank" rel="noreferrer" className="block text-gray-300 hover:text-white">Documentation</a>
             </div>
           </div>
         </div>

@@ -10,10 +10,11 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-              <Home className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">ScriptAI</span>
+            <img
+              src="/Logo.png"
+              alt="Storybit"
+              className="h-8 sm:h-9 md:h-10 lg:h-12 w-auto max-w-full"
+            />
           </Link>
 
           {/* Action Buttons */}
