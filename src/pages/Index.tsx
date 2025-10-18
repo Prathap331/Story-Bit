@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import ComingFeatures from '../components/ComingFeatures';
 import Footer from '../components/Footer';
+import ScriptGenerator from '../components/ScriptGenerator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -201,6 +202,20 @@ const Index = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Script Generator Section */}
+      <section className="container mx-auto px-2 sm:px-4 py-8 sm:py-16">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
+            Start Creating Content
+          </h2>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-2">
+            Use our AI-powered tools to generate scripts or process topics for your next video content.
+            Choose between generating ideas or creating complete scripts.
+          </p>
+        </div>
+        <ScriptGenerator />
       </section>
 
       {/* Coming Features Section */}
