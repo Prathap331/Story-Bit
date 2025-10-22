@@ -17,6 +17,25 @@ interface ScriptIdea {
   category: string;
 }
 
+// Global cache to store results across component remounts
+const resultsCache = new Map<string, {
+  scriptIdeas: ScriptIdea[];
+  error: string | null;
+  timestamp: number;
+}>();
+
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+// Function to clean up old cache entries
+const cleanupCache = () => {
+  const now = Date.now();
+  for (const [key, value] of resultsCache.entries()) {
+    if (now - value.timestamp > CACHE_DURATION) {
+      resultsCache.delete(key);
+    }
+  }
+};
+
 const SearchResults = () => {
   const { topic } = useParams();
   const navigate = useNavigate();
@@ -28,6 +47,11 @@ const SearchResults = () => {
 
   const categories = ['all', 'Technology', 'Social Impact', 'Economic Analysis', 'Historical', 'Future Analysis'];
 
+  // Clean up old cache entries on component mount
+  useEffect(() => {
+    cleanupCache();
+  }, []);
+
   // Fetch script ideas from API with resilient retry and persistent loader (up to ~2 minutes)
   const initialLoadStartRef = useRef<number | null>(null);
   useEffect(() => {
@@ -35,6 +59,18 @@ const SearchResults = () => {
 
     const run = async () => {
       if (!topic) return;
+
+      // Check cache first
+      const cachedResult = resultsCache.get(topic);
+      const now = Date.now();
+      
+      if (cachedResult && (now - cachedResult.timestamp) < CACHE_DURATION) {
+        // Use cached data
+        setScriptIdeas(cachedResult.scriptIdeas);
+        setError(cachedResult.error);
+        setIsLoading(false);
+        return;
+      }
 
       // initialize load start for this topic
       initialLoadStartRef.current = Date.now();
@@ -56,6 +92,13 @@ const SearchResults = () => {
             description: response.descriptions[index] || 'No description available.',
             category: getCategoryFromIndex(index)
           }));
+
+          // Cache the successful result
+          resultsCache.set(topic, {
+            scriptIdeas: ideas,
+            error: null,
+            timestamp: Date.now()
+          });
 
           setScriptIdeas(ideas);
           setIsLoading(false);
@@ -94,14 +137,21 @@ const SearchResults = () => {
             }
           ];
 
+          // Cache the fallback result
+          const errorMessage = message.includes('timeout') 
+            ? 'API request timed out after waiting. Using sample data.'
+            : message.includes('502')
+            ? 'API server returned 502 for an extended period. Using sample data.'
+            : 'API temporarily unavailable. Using sample data.';
+
+          resultsCache.set(topic, {
+            scriptIdeas: fallbackIdeas,
+            error: errorMessage,
+            timestamp: Date.now()
+          });
+
           setScriptIdeas(fallbackIdeas);
-          if (message.includes('timeout')) {
-            setError('API request timed out after waiting. Using sample data.');
-          } else if (message.includes('502')) {
-            setError('API server returned 502 for an extended period. Using sample data.');
-          } else {
-            setError('API temporarily unavailable. Using sample data.');
-          }
+          setError(errorMessage);
           setIsLoading(false);
           return;
         }
