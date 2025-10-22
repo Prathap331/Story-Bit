@@ -6,7 +6,7 @@ import { Crown, Home, User } from 'lucide-react';
 const Header = () => {
   return (
     <header className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-16 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">

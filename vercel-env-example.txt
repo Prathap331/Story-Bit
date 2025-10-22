@@ -1,0 +1,13 @@
+# Environment Variables for Vercel Deployment
+
+# Set this in your Vercel dashboard under Settings > Environment Variables
+# For production, you can either:
+
+# Option 1: Use your backend URL (requires CORS fix on backend)
+VITE_API_URL=https://sb-u864.onrender.com
+
+# Option 2: Use a CORS proxy service (temporary solution)
+# VITE_API_URL=https://cors-anywhere.herokuapp.com/https://sb-u864.onrender.com
+
+# Option 3: Leave empty to use fallback data (current solution)
+# VITE_API_URL=
